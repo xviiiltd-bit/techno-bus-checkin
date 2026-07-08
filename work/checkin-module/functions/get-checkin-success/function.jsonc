@@ -1,0 +1,4 @@
+{
+  "name": "get-checkin-success",
+  "description": "Public fallback endpoint for loading event name on the check-in success page."
+}

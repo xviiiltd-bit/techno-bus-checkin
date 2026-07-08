@@ -1,0 +1,4 @@
+{
+  "name": "public-event-checkin",
+  "description": "Public attendee check-in endpoint for event QR code flow. Searches registrations, prevents duplicate check-ins, updates Member attendance, and creates CheckInRecords."
+}
