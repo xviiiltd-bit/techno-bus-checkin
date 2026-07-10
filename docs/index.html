@@ -6,19 +6,21 @@
     <title>Techno Bus Check-in</title>
     <meta
       name="description"
-      content="Techno Bus public event check-in preview with Traditional Chinese as the default language and English translation toggle."
+      content="Techno Bus public event check-in flow with Traditional Chinese as the default language and English translation toggle."
     />
     <style>
       :root {
-        --bg: #080a0a;
-        --panel: #101417;
-        --panel-2: #151a1d;
-        --line: rgba(57, 255, 20, 0.22);
-        --green: #39ff14;
-        --green-soft: rgba(57, 255, 20, 0.12);
-        --text: #f3f5f2;
-        --muted: rgba(243, 245, 242, 0.58);
-        --muted-2: rgba(243, 245, 242, 0.36);
+        --bg: #030504;
+        --panel: rgba(12, 17, 18, 0.9);
+        --panel-2: rgba(18, 24, 26, 0.82);
+        --line: rgba(166, 255, 0, 0.34);
+        --green: #a6ff00;
+        --green-2: #76ff03;
+        --text: #f4f7ef;
+        --muted: rgba(244, 247, 239, 0.64);
+        --dim: rgba(244, 247, 239, 0.38);
+        --stroke: rgba(255, 255, 255, 0.1);
+        --shadow: 0 0 34px rgba(166, 255, 0, 0.2);
       }
 
       * {
@@ -29,29 +31,51 @@
         background: var(--bg);
         color: var(--text);
         font-family:
-          Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-          "Segoe UI", "Noto Sans TC", sans-serif;
+          "Noto Sans TC", Inter, ui-sans-serif, system-ui, -apple-system,
+          BlinkMacSystemFont, "Segoe UI", sans-serif;
       }
 
       body {
-        margin: 0;
         min-height: 100vh;
+        margin: 0;
+        overflow-x: hidden;
         background:
-          radial-gradient(circle at 20% 0%, rgba(57, 255, 20, 0.12), transparent 30rem),
-          radial-gradient(circle at 80% 35%, rgba(57, 255, 20, 0.08), transparent 26rem),
-          linear-gradient(180deg, #080a0a 0%, #0b0f10 52%, #070808 100%);
+          radial-gradient(circle at 78% 18%, rgba(166, 255, 0, 0.2), transparent 24rem),
+          radial-gradient(circle at 22% 12%, rgba(166, 255, 0, 0.09), transparent 18rem),
+          linear-gradient(180deg, #020302 0%, #070a09 45%, #030504 100%);
       }
 
       body::before {
         position: fixed;
         inset: 0;
-        z-index: -1;
-        background-image:
-          linear-gradient(rgba(57, 255, 20, 0.04) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(57, 255, 20, 0.035) 1px, transparent 1px);
-        background-size: 72px 72px;
+        z-index: -2;
+        pointer-events: none;
+        background:
+          linear-gradient(rgba(166, 255, 0, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(166, 255, 0, 0.025) 1px, transparent 1px);
+        background-size: 64px 64px;
         content: "";
-        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.9), transparent 80%);
+        mask-image: linear-gradient(to bottom, black, transparent 78%);
+      }
+
+      body::after {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background:
+          linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 40%, rgba(0, 0, 0, 0.4)),
+          repeating-linear-gradient(90deg, transparent 0 46px, rgba(255, 255, 255, 0.018) 47px);
+        content: "";
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
       }
 
       a {
@@ -60,60 +84,83 @@
       }
 
       .page {
-        width: min(1120px, calc(100% - 32px));
+        width: min(1180px, calc(100% - 28px));
         margin: 0 auto;
-        padding: 32px 0 56px;
+        padding: 24px 0 34px;
       }
 
       .topbar {
-        display: flex;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
         align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        margin-bottom: 54px;
+        gap: 22px;
+        min-height: 58px;
+        border-bottom: 1px solid rgba(166, 255, 0, 0.32);
       }
 
       .brand {
-        display: flex;
+        display: inline-flex;
         align-items: center;
-        gap: 12px;
-        color: var(--muted);
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 0.24em;
+        gap: 11px;
+        color: var(--green);
+        font-size: clamp(18px, 2vw, 25px);
+        font-weight: 900;
+        letter-spacing: -0.04em;
         text-transform: uppercase;
+        text-shadow: 0 0 18px rgba(166, 255, 0, 0.42);
       }
 
-      .brand-mark {
-        width: 38px;
-        height: 20px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
+      .bus-logo {
+        position: relative;
+        width: 34px;
+        height: 26px;
+        border: 2px solid var(--green);
+        border-radius: 8px 8px 4px 4px;
+        box-shadow: var(--shadow);
+      }
+
+      .bus-logo::before {
+        position: absolute;
+        top: 6px;
+        left: 5px;
+        width: 20px;
+        height: 5px;
+        border: 1px solid var(--green);
+        border-radius: 2px;
+        content: "";
+      }
+
+      .bus-logo::after {
+        position: absolute;
+        bottom: -8px;
+        left: 3px;
+        width: 28px;
+        height: 8px;
         background:
-          radial-gradient(circle at 25% 50%, var(--green) 0 3px, transparent 4px),
-          radial-gradient(circle at 75% 50%, var(--green) 0 3px, transparent 4px),
-          rgba(57, 255, 20, 0.08);
-        box-shadow: 0 0 24px rgba(57, 255, 20, 0.18);
+          radial-gradient(circle at 5px 3px, var(--green) 0 3px, transparent 4px),
+          radial-gradient(circle at 23px 3px, var(--green) 0 3px, transparent 4px);
+        content: "";
+      }
+
+      .nav {
+        display: flex;
+        justify-content: center;
+        gap: clamp(18px, 4vw, 56px);
+        color: rgba(244, 247, 239, 0.78);
+        font-size: 14px;
+        font-weight: 700;
       }
 
       .language-toggle {
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        min-width: 58px;
+        border: 1px solid var(--green);
         border-radius: 999px;
-        background: rgba(0, 0, 0, 0.36);
-        color: var(--green);
-        cursor: pointer;
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.12em;
+        background: rgba(0, 0, 0, 0.42);
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 900;
         padding: 9px 14px;
-      }
-
-      .hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1.05fr) minmax(300px, 0.95fr);
-        gap: 32px;
-        align-items: center;
-        min-height: 560px;
+        box-shadow: inset 0 0 15px rgba(166, 255, 0, 0.08), 0 0 18px rgba(166, 255, 0, 0.16);
       }
 
       .view {
@@ -121,384 +168,670 @@
       }
 
       .view.is-active {
+        display: block;
+      }
+
+      .hero {
+        position: relative;
+        min-height: 650px;
+        padding: 74px 0 54px;
+      }
+
+      .hero-grid {
+        position: relative;
+        z-index: 2;
         display: grid;
+        grid-template-columns: 0.82fr 1.18fr;
+        gap: 26px;
+        align-items: center;
       }
 
-      .eyebrow,
-      .section-kicker {
+      .eyebrow {
+        color: rgba(244, 247, 239, 0.92);
+        font-size: clamp(32px, 5vw, 60px);
+        font-weight: 350;
+        letter-spacing: -0.06em;
+        line-height: 0.92;
+        text-transform: uppercase;
+      }
+
+      .hero-title {
+        margin: 8px 0 0;
         color: var(--green);
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.32em;
-        text-transform: uppercase;
-      }
-
-      h1,
-      h2,
-      h3,
-      p {
-        margin: 0;
-      }
-
-      h1 {
-        margin-top: 18px;
-        max-width: 760px;
-        font-size: clamp(52px, 10vw, 118px);
-        font-weight: 500;
-        letter-spacing: -0.08em;
+        font-size: clamp(58px, 10vw, 106px);
+        font-weight: 950;
+        letter-spacing: -0.09em;
         line-height: 0.88;
-        text-transform: uppercase;
+        text-shadow: 0 0 34px rgba(166, 255, 0, 0.4);
+      }
+
+      .hero-copy,
+      .section-copy {
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.8;
       }
 
       .hero-copy {
         max-width: 560px;
         margin-top: 22px;
-        color: var(--muted);
-        font-size: 17px;
-        line-height: 1.8;
       }
 
-      .pills {
+      .pill-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 28px;
+        gap: 12px;
+        margin-top: 22px;
       }
 
       .pill {
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid var(--green);
         border-radius: 999px;
-        background: rgba(255, 255, 255, 0.045);
-        color: rgba(255, 255, 255, 0.72);
-        font-size: 12px;
-        font-weight: 700;
-        padding: 9px 13px;
+        background: rgba(0, 0, 0, 0.34);
+        color: rgba(244, 247, 239, 0.88);
+        font-size: 13px;
+        font-weight: 800;
+        padding: 9px 16px;
+      }
+
+      .pill-icon {
+        display: inline-grid;
+        width: 18px;
+        height: 18px;
+        place-items: center;
+        border: 1px solid var(--green);
+        border-radius: 5px;
+        color: var(--green);
+        font-size: 10px;
       }
 
       .actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 34px;
+        gap: 18px;
+        margin-top: 36px;
       }
 
       .button {
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        min-height: 52px;
-        border-radius: 18px;
-        font-size: 14px;
-        font-weight: 850;
-        letter-spacing: 0.08em;
-        padding: 0 22px;
+        gap: 14px;
+        min-height: 64px;
+        border-radius: 12px;
+        border: 1px solid rgba(166, 255, 0, 0.42);
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+        font-size: 18px;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+        padding: 0 34px;
       }
 
       .button.primary {
-        background: var(--green);
-        color: #071007;
-        box-shadow: 0 0 30px rgba(57, 255, 20, 0.24);
+        border-color: transparent;
+        background: linear-gradient(180deg, var(--green), #87ff00);
+        color: #061006;
+        box-shadow: 0 0 32px rgba(166, 255, 0, 0.34);
       }
 
       .button.secondary {
-        border: 1px solid rgba(255, 255, 255, 0.12);
-        background: rgba(255, 255, 255, 0.055);
-        color: rgba(255, 255, 255, 0.82);
+        background: rgba(4, 6, 6, 0.48);
       }
 
-      .bus-card {
+      .button.full {
+        width: 100%;
+      }
+
+      .button.small {
+        min-height: 48px;
+        border-radius: 10px;
+        font-size: 15px;
+        padding: 0 22px;
+      }
+
+      .arrow {
+        font-size: 30px;
+        line-height: 1;
+      }
+
+      .hero-art {
         position: relative;
-        min-height: 420px;
-        overflow: hidden;
-        border: 1px solid var(--line);
-        border-radius: 34px;
+        min-height: 470px;
+      }
+
+      .city {
+        position: absolute;
+        inset: 0 0 120px 12%;
+        opacity: 0.48;
         background:
-          linear-gradient(135deg, rgba(57, 255, 20, 0.13), transparent 40%),
-          linear-gradient(180deg, #151a1d, #090b0b);
-        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 30px 80px rgba(0, 0, 0, 0.46);
+          linear-gradient(to top, rgba(255, 255, 255, 0.1) 0 30%, transparent 30%),
+          repeating-linear-gradient(90deg, transparent 0 27px, rgba(255, 255, 255, 0.16) 28px 30px, transparent 31px 60px);
+        clip-path: polygon(0 100%, 0 48%, 7% 48%, 7% 76%, 14% 76%, 14% 36%, 19% 36%, 19% 100%, 29% 100%, 29% 58%, 35% 58%, 35% 22%, 40% 22%, 40% 100%, 55% 100%, 55% 40%, 61% 40%, 61% 100%, 73% 100%, 73% 64%, 80% 64%, 80% 100%, 100% 100%);
       }
 
-      .route-line {
+      .bus-hero {
         position: absolute;
-        inset: 38px 30px auto;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, var(--green), transparent);
-        opacity: 0.8;
+        right: 2%;
+        bottom: 74px;
+        width: min(610px, 94%);
+        height: 260px;
+        transform: perspective(780px) rotateY(-13deg) rotateX(2deg);
+        border: 2px solid rgba(166, 255, 0, 0.34);
+        border-radius: 50px 24px 26px 30px;
+        background:
+          linear-gradient(90deg, rgba(166, 255, 0, 0.16), rgba(255, 255, 255, 0.03) 38%, rgba(0, 0, 0, 0.86)),
+          linear-gradient(180deg, #18201d, #050706);
+        box-shadow:
+          inset 0 0 40px rgba(166, 255, 0, 0.08),
+          0 0 90px rgba(166, 255, 0, 0.28),
+          0 35px 85px rgba(0, 0, 0, 0.8);
       }
 
-      .bus-shape {
+      .bus-hero::before {
         position: absolute;
-        right: -30px;
-        bottom: 72px;
+        top: 40px;
+        left: 42px;
         width: 360px;
-        height: 152px;
-        border: 1px solid rgba(57, 255, 20, 0.24);
-        border-radius: 38px 16px 28px 28px;
-        background:
-          linear-gradient(90deg, rgba(57, 255, 20, 0.12), rgba(255, 255, 255, 0.03)),
-          #0b0f10;
-        box-shadow: 0 0 70px rgba(57, 255, 20, 0.16);
-      }
-
-      .bus-shape::before {
-        position: absolute;
-        top: 28px;
-        left: 34px;
-        width: 198px;
-        height: 48px;
-        border: 1px solid rgba(57, 255, 20, 0.22);
+        height: 68px;
+        border: 1px solid rgba(166, 255, 0, 0.35);
         border-radius: 18px;
-        background: rgba(57, 255, 20, 0.08);
-        content: "";
-      }
-
-      .bus-shape::after {
-        position: absolute;
-        right: 46px;
-        bottom: -16px;
-        width: 170px;
-        height: 34px;
-        border-radius: 999px;
         background:
-          radial-gradient(circle at 22% 50%, var(--green) 0 9px, #060808 10px 18px, transparent 19px),
-          radial-gradient(circle at 78% 50%, var(--green) 0 9px, #060808 10px 18px, transparent 19px);
+          repeating-linear-gradient(90deg, rgba(166, 255, 0, 0.16) 0 2px, transparent 3px 58px),
+          rgba(0, 0, 0, 0.38);
         content: "";
       }
 
-      .ticket {
+      .bus-hero::after {
         position: absolute;
-        left: 28px;
-        bottom: 28px;
-        width: 215px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 24px;
-        background: rgba(0, 0, 0, 0.28);
-        padding: 18px;
+        right: 50px;
+        bottom: -26px;
+        width: 335px;
+        height: 50px;
+        background:
+          radial-gradient(circle at 18% 50%, var(--green) 0 10px, #050606 11px 25px, transparent 26px),
+          radial-gradient(circle at 82% 50%, var(--green) 0 10px, #050606 11px 25px, transparent 26px);
+        content: "";
+        filter: drop-shadow(0 0 15px rgba(166, 255, 0, 0.8));
       }
 
-      .ticket small {
-        display: block;
-        color: var(--muted-2);
-        font-size: 10px;
-        font-weight: 800;
-        letter-spacing: 0.24em;
-        text-transform: uppercase;
-      }
-
-      .ticket strong {
-        display: block;
-        margin-top: 10px;
+      .bus-sign {
+        position: absolute;
+        top: 30px;
+        right: 54px;
+        border: 1px solid rgba(166, 255, 0, 0.45);
+        border-radius: 8px;
+        background: rgba(0, 0, 0, 0.65);
         color: var(--green);
-        font-size: 18px;
-        letter-spacing: -0.02em;
+        font-size: 22px;
+        font-weight: 950;
+        padding: 9px 18px;
+        text-shadow: 0 0 15px rgba(166, 255, 0, 0.9);
       }
 
-      .section {
+      .headlights {
+        position: absolute;
+        right: 38px;
+        bottom: 48px;
+        width: 150px;
+        height: 50px;
+        background:
+          radial-gradient(ellipse at 18% 70%, var(--green) 0 10px, transparent 26px),
+          radial-gradient(ellipse at 80% 70%, var(--green) 0 10px, transparent 26px);
+        filter: blur(1px) drop-shadow(0 0 18px rgba(166, 255, 0, 0.9));
+      }
+
+      .route-glow {
+        position: absolute;
+        right: 0;
+        bottom: 20px;
+        width: 92%;
+        height: 180px;
+        border-bottom: 7px solid var(--green);
+        border-left: 5px solid transparent;
+        border-radius: 50%;
+        transform: rotate(8deg);
+        filter: drop-shadow(0 0 13px rgba(166, 255, 0, 0.85));
+        opacity: 0.9;
+      }
+
+      .next-stop {
+        position: absolute;
+        right: 0;
+        bottom: 18px;
+        border: 1px solid var(--green);
+        border-radius: 10px;
+        color: var(--green);
+        font-size: 15px;
+        font-weight: 950;
+        line-height: 1.1;
+        padding: 14px 20px;
+        text-align: right;
+      }
+
+      .step {
+        min-height: calc(100vh - 118px);
+        padding: 34px 0 28px;
+      }
+
+      .step-card {
         display: grid;
-        grid-template-columns: minmax(0, 0.82fr) minmax(320px, 1.18fr);
-        gap: 28px;
-        align-items: start;
-        min-height: 560px;
+        grid-template-columns: 330px 1fr;
+        gap: 62px;
+        align-items: center;
+        min-height: 480px;
+        border: 1px solid var(--stroke);
+        border-radius: 16px;
+        background:
+          linear-gradient(135deg, rgba(166, 255, 0, 0.08), transparent 34%),
+          radial-gradient(circle at 90% 20%, rgba(166, 255, 0, 0.09), transparent 22rem),
+          var(--panel);
+        box-shadow: inset 0 0 0 1px rgba(166, 255, 0, 0.03), 0 28px 90px rgba(0, 0, 0, 0.45);
+        padding: clamp(24px, 3.6vw, 48px);
       }
 
-      .section-title {
-        margin-top: 16px;
-        font-size: clamp(38px, 7vw, 78px);
-        font-weight: 520;
-        letter-spacing: -0.07em;
-        line-height: 0.94;
+      .step-number {
+        color: var(--green);
+        font-size: clamp(48px, 6vw, 72px);
+        font-weight: 950;
+        letter-spacing: -0.09em;
       }
 
-      .section-copy {
+      .step-title {
+        margin: 0;
+        font-size: clamp(38px, 5vw, 64px);
+        font-weight: 500;
+        letter-spacing: -0.08em;
+        line-height: 1;
+      }
+
+      .step-text {
         margin-top: 18px;
         color: var(--muted);
-        font-size: 15px;
+        font-size: 18px;
         line-height: 1.8;
       }
 
-      .card {
+      .ticket-card,
+      .ticket-visual {
         position: relative;
         overflow: hidden;
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        border-radius: 32px;
-        background: rgba(16, 20, 23, 0.88);
-        padding: 26px;
-        box-shadow: 0 22px 70px rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(166, 255, 0, 0.48);
+        border-radius: 16px;
+        background:
+          linear-gradient(145deg, rgba(166, 255, 0, 0.12), transparent 45%),
+          rgba(6, 8, 8, 0.82);
+        box-shadow: inset 0 0 35px rgba(166, 255, 0, 0.05), 0 0 32px rgba(166, 255, 0, 0.1);
       }
 
-      .card::before {
+      .ticket-card {
+        min-height: 350px;
+        padding: 28px 34px;
+      }
+
+      .ticket-card::before,
+      .ticket-card::after,
+      .ticket-visual::before,
+      .ticket-visual::after {
         position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        background: linear-gradient(135deg, rgba(57, 255, 20, 0.11), transparent 42%);
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        background: #090d0d;
+        border: 1px solid rgba(166, 255, 0, 0.36);
         content: "";
-        pointer-events: none;
       }
 
-      .card > * {
-        position: relative;
+      .ticket-card::before,
+      .ticket-visual::before {
+        top: -12px;
+        left: 50%;
       }
 
-      .form-card h3,
-      .success-card h3,
-      .reward-card h3 {
-        font-size: 30px;
-        font-weight: 650;
-        letter-spacing: -0.045em;
+      .ticket-card::after,
+      .ticket-visual::after {
+        bottom: -12px;
+        left: 50%;
       }
 
-      .form-card p,
-      .success-card p,
-      .reward-card p {
-        color: var(--muted);
-        line-height: 1.7;
+      .ticket-kicker,
+      .card-kicker {
+        color: var(--green);
+        font-size: 15px;
+        font-weight: 950;
+        letter-spacing: 0.03em;
+      }
+
+      .ticket-list {
+        display: grid;
+        gap: 14px;
+        margin-top: 28px;
+      }
+
+      .ticket-list span {
+        display: block;
+        color: var(--dim);
+        font-size: 13px;
+      }
+
+      .ticket-list strong {
+        display: block;
+        margin-top: 5px;
+        font-size: 17px;
+      }
+
+      .barcode {
+        height: 38px;
+        margin-top: 28px;
+        background: repeating-linear-gradient(90deg, var(--text) 0 2px, transparent 2px 5px, var(--text) 5px 6px, transparent 6px 12px);
+        opacity: 0.85;
+      }
+
+      .form-card {
+        max-width: 720px;
       }
 
       .field {
-        margin-top: 22px;
+        margin-top: 28px;
       }
 
       .field label {
         display: block;
-        margin-bottom: 9px;
-        color: rgba(255, 255, 255, 0.74);
-        font-size: 13px;
-        font-weight: 750;
+        margin-bottom: 12px;
+        color: var(--muted);
+        font-size: 15px;
+        font-weight: 700;
       }
 
-      .input {
+      .input-shell {
         display: flex;
         align-items: center;
-        height: 58px;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 19px;
-        background: rgba(0, 0, 0, 0.27);
-        color: var(--muted-2);
-        font-size: 15px;
-        padding: 0 18px;
-      }
-
-      .full {
-        width: 100%;
-        margin-top: 18px;
+        min-height: 82px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 13px;
+        background: rgba(255, 255, 255, 0.045);
+        color: var(--dim);
+        font-size: 19px;
+        padding: 0 24px;
       }
 
       .meta {
-        margin-top: 18px;
-        color: var(--muted-2);
-        font-size: 12px;
-        letter-spacing: 0.08em;
+        margin-top: 20px;
+        color: var(--dim);
+        font-size: 14px;
+        letter-spacing: 0.03em;
       }
 
-      .match-list {
+      .meta strong {
+        color: var(--green);
+        font-weight: 800;
+      }
+
+      .name-step {
+        grid-template-columns: 0.75fr 1.25fr;
+      }
+
+      .scan-icon {
         display: grid;
-        gap: 12px;
-      }
-
-      .match {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        width: 100px;
+        height: 100px;
+        margin-top: 48px;
+        place-items: center;
+        border: 4px solid var(--green);
         border-radius: 22px;
-        background: rgba(0, 0, 0, 0.25);
-        padding: 16px;
+        color: var(--green);
+        font-size: 44px;
+        box-shadow: var(--shadow);
+        clip-path: polygon(0 0, 32% 0, 32% 8%, 8% 8%, 8% 32%, 0 32%, 0 0, 100% 0, 100% 32%, 92% 32%, 92% 8%, 68% 8%, 68% 0, 100% 0, 100% 100%, 68% 100%, 68% 92%, 92% 92%, 92% 68%, 100% 68%, 100% 100%, 0 100%, 0 68%, 8% 68%, 8% 92%, 32% 92%, 32% 100%, 0 100%);
       }
 
-      .match strong {
-        display: block;
-        font-size: 17px;
-      }
-
-      .match span {
-        color: var(--muted-2);
-        font-size: 12px;
-      }
-
-      .mini-button {
-        border: 0;
-        border-radius: 999px;
-        background: var(--green);
-        color: #071007;
-        font-size: 12px;
-        font-weight: 850;
-        padding: 10px 13px;
-        white-space: nowrap;
-      }
-
-      .success-grid {
+      .match-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-top: 22px;
+        gap: 22px;
       }
 
-      .stat {
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        border-radius: 20px;
-        background: rgba(0, 0, 0, 0.24);
-        padding: 16px;
+      .match-card {
+        min-height: 232px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 16px;
+        background: var(--panel-2);
+        padding: 28px 22px;
       }
 
-      .stat small {
-        display: block;
-        color: var(--muted-2);
-        font-size: 12px;
+      .match-card.is-selected {
+        border-color: var(--green);
+        box-shadow: var(--shadow);
       }
 
-      .stat strong {
-        display: block;
-        margin-top: 7px;
-        font-size: 16px;
+      .radio-dot {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        border-radius: 999px;
+        vertical-align: -5px;
+      }
+
+      .is-selected .radio-dot {
+        border-color: var(--green);
+        box-shadow: inset 0 0 0 5px #071007, 0 0 16px rgba(166, 255, 0, 0.9);
+        background: var(--green);
+      }
+
+      .match-name {
+        font-size: 24px;
+        font-weight: 500;
+      }
+
+      .match-meta {
+        margin: 18px 0 28px;
+        color: var(--dim);
+        line-height: 1.9;
+      }
+
+      .note {
+        margin-top: 24px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .success-step {
+        grid-template-columns: 0.9fr 1.1fr;
+      }
+
+      .detail-list {
+        display: grid;
+        gap: 16px;
+        margin-top: 28px;
+        color: rgba(244, 247, 239, 0.82);
+      }
+
+      .detail-list div {
+        display: grid;
+        grid-template-columns: 90px 1fr;
+        gap: 14px;
+      }
+
+      .detail-list span {
+        color: var(--dim);
+      }
+
+      .detail-list strong {
+        color: var(--green);
+        font-size: 22px;
+      }
+
+      .ticket-visual {
+        min-height: 230px;
+        padding: 34px;
+        transform: rotate(-4deg);
+      }
+
+      .ticket-visual h3 {
+        margin: 0;
+        color: var(--green);
+        font-style: italic;
+        text-transform: uppercase;
+      }
+
+      .bus-line-art {
+        height: 98px;
+        margin: 24px 0;
+        border: 1px solid rgba(166, 255, 0, 0.3);
+        border-radius: 18px;
+        background:
+          radial-gradient(circle at 22% 70%, var(--green) 0 6px, transparent 7px),
+          radial-gradient(circle at 78% 70%, var(--green) 0 6px, transparent 7px),
+          linear-gradient(transparent 55%, rgba(166, 255, 0, 0.26) 56% 58%, transparent 59%),
+          repeating-linear-gradient(90deg, rgba(166, 255, 0, 0.11) 0 2px, transparent 3px 46px);
       }
 
       .socials {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-        margin-top: 24px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin-top: 34px;
       }
 
       .socials a {
         display: flex;
         align-items: center;
         justify-content: center;
-        min-height: 48px;
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        border-radius: 18px;
-        background: rgba(255, 255, 255, 0.055);
-        color: rgba(255, 255, 255, 0.78);
-        font-size: 13px;
-        font-weight: 760;
+        min-height: 62px;
+        border: 1px solid var(--green);
+        border-radius: 10px;
+        background: rgba(4, 6, 6, 0.55);
+        color: var(--text);
+        font-size: 16px;
+        font-weight: 750;
       }
 
-      .reward-card {
-        margin-top: 28px;
+      .reward-step {
+        grid-template-columns: 0.95fr 1.05fr;
+      }
+
+      .drink {
+        position: relative;
+        width: 190px;
+        height: 190px;
+        margin: 0 auto;
+        border: 2px solid rgba(166, 255, 0, 0.64);
+        border-radius: 999px;
+        box-shadow: var(--shadow);
+      }
+
+      .drink::before {
+        position: absolute;
+        inset: 38px 58px 24px;
+        border: 2px solid var(--green);
+        border-top-width: 8px;
+        border-radius: 14px 14px 28px 28px;
+        transform: skewX(-8deg);
+        content: "";
+      }
+
+      .drink::after {
+        position: absolute;
+        top: 8px;
+        left: 104px;
+        width: 8px;
+        height: 138px;
+        border-radius: 99px;
+        background: var(--green);
+        transform: rotate(24deg);
+        box-shadow: var(--shadow);
+        content: "";
+      }
+
+      .reward-copy strong {
+        display: block;
+        margin-top: 10px;
+        color: var(--green);
+        font-size: clamp(34px, 5vw, 56px);
+        line-height: 1.05;
+      }
+
+      .voucher {
+        min-height: 190px;
+        border: 1px solid rgba(166, 255, 0, 0.44);
+        border-radius: 20px;
+        background: rgba(166, 255, 0, 0.08);
+        padding: 34px;
+      }
+
+      .voucher h3 {
+        margin: 0;
+        color: var(--green);
+        font-size: 26px;
       }
 
       .status {
         display: inline-flex;
-        margin-top: 18px;
-        border: 1px solid var(--line);
-        border-radius: 999px;
-        background: var(--green-soft);
-        color: var(--green);
-        font-size: 12px;
-        font-weight: 850;
-        letter-spacing: 0.1em;
-        padding: 8px 12px;
+        align-items: center;
+        gap: 10px;
+        min-height: 42px;
+        margin-top: 22px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 10px;
+        color: var(--muted);
+        padding: 0 18px;
       }
 
-      footer {
-        margin-top: 96px;
-        border-top: 1px solid rgba(255, 255, 255, 0.08);
-        padding-top: 28px;
-        color: var(--muted-2);
-        font-size: 12px;
-        font-weight: 800;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
+      .status::before {
+        width: 14px;
+        height: 14px;
+        border-radius: 999px;
+        background: var(--green);
+        box-shadow: 0 0 14px rgba(166, 255, 0, 0.8);
+        content: "";
+      }
+
+      .thanks {
+        min-height: 210px;
+        border: 1px solid var(--stroke);
+        border-radius: 16px;
+        background:
+          radial-gradient(circle at 70% 50%, rgba(166, 255, 0, 0.14), transparent 18rem),
+          var(--panel);
+        padding: 36px;
+      }
+
+      .thanks-route {
+        height: 95px;
+        margin-top: 28px;
+        background:
+          radial-gradient(circle at 7% 45%, var(--green) 0 9px, transparent 10px),
+          radial-gradient(circle at 94% 20%, var(--green) 0 7px, transparent 8px),
+          linear-gradient(165deg, transparent 0 28%, var(--green) 29% 31%, transparent 32% 100%);
+        filter: drop-shadow(0 0 14px rgba(166, 255, 0, 0.5));
+      }
+
+      .footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-top: 1px solid var(--stroke);
+        color: var(--dim);
+        font-size: 13px;
+        padding-top: 22px;
+      }
+
+      .footer strong {
+        color: var(--green);
+        letter-spacing: 0.08em;
+      }
+
+      .barcode-wide {
+        width: 210px;
+        height: 42px;
+        background: repeating-linear-gradient(90deg, var(--green) 0 4px, transparent 4px 8px, var(--green) 8px 10px, transparent 10px 16px);
+        filter: drop-shadow(0 0 12px rgba(166, 255, 0, 0.4));
       }
 
       [data-lang="en"] .zh,
@@ -506,51 +839,111 @@
         display: none;
       }
 
-      @media (max-width: 820px) {
+      @media (max-width: 920px) {
         .page {
-          width: min(100% - 24px, 540px);
-          padding-top: 22px;
+          width: min(100% - 22px, 540px);
+          padding-top: 18px;
         }
 
         .topbar {
-          margin-bottom: 36px;
+          grid-template-columns: 1fr auto;
         }
 
-        .hero,
-        .section {
-          display: block;
-          min-height: auto;
-        }
-
-        .view {
+        .nav {
           display: none;
         }
 
-        .view.is-active {
+        .hero {
+          min-height: auto;
+          padding-top: 42px;
+        }
+
+        .hero-grid,
+        .step-card,
+        .name-step,
+        .success-step,
+        .reward-step {
           display: block;
         }
 
-        .bus-card,
-        .section > .card,
-        .section > div + div {
+        .hero-art {
+          min-height: 350px;
           margin-top: 26px;
         }
 
-        .bus-card {
-          min-height: 345px;
+        .bus-hero {
+          right: -160px;
+          bottom: 70px;
+          width: 530px;
+          height: 214px;
         }
 
-        .bus-shape {
-          right: -85px;
-          width: 330px;
+        .bus-hero::before {
+          width: 265px;
         }
 
-        .section {
-          margin-top: 76px;
+        .route-glow {
+          right: -90px;
+          bottom: 16px;
+          width: 110%;
         }
 
-        .success-grid {
+        .next-stop {
+          right: 4px;
+          bottom: 0;
+          font-size: 12px;
+        }
+
+        .pill-row {
+          display: none;
+        }
+
+        .actions {
+          display: grid;
+        }
+
+        .step {
+          padding-top: 24px;
+        }
+
+        .step-card {
+          min-height: calc(100vh - 118px);
+          padding: 22px;
+        }
+
+        .ticket-card,
+        .ticket-visual,
+        .form-card,
+        .match-grid,
+        .success-visual,
+        .reward-media {
+          margin-top: 28px;
+        }
+
+        .match-grid,
+        .socials {
           grid-template-columns: 1fr;
+        }
+
+        .match-card {
+          min-height: auto;
+        }
+
+        .ticket-card {
+          min-height: 310px;
+        }
+
+        .input-shell {
+          min-height: 68px;
+          font-size: 16px;
+        }
+
+        .detail-list div {
+          grid-template-columns: 72px 1fr;
+        }
+
+        .footer {
+          display: grid;
         }
       }
     </style>
@@ -558,218 +951,210 @@
   <body data-lang="zh">
     <main class="page">
       <header class="topbar">
-        <a class="brand" href="#top" aria-label="Techno Bus Check-in">
-          <span class="brand-mark" aria-hidden="true"></span>
-          <span>Techno Bus</span>
+        <a class="brand" href="#home" data-go="home" aria-label="Techno Bus Check-in">
+          <span class="bus-logo" aria-hidden="true"></span>
+          <span>TECHNO BUS</span>
         </a>
+        <nav class="nav" aria-label="Primary">
+          <a href="#checkin" data-go="checkin"><span class="zh">活動報到</span><span class="en">Check-in</span></a>
+          <a href="#success" data-go="success"><span class="zh">真實數據</span><span class="en">Audience data</span></a>
+          <a href="#reward" data-go="reward"><span class="zh">更好的活動</span><span class="en">Better events</span></a>
+        </nav>
         <button class="language-toggle" type="button" aria-label="Switch language">EN</button>
       </header>
 
-      <section id="top" class="hero view is-active" data-view="home">
-        <div>
-          <p class="eyebrow">
-            <span class="zh">TECHNO BUS 報到</span>
-            <span class="en">TECHNO BUS CHECK-IN</span>
-          </p>
-          <h1>
-            <span class="zh">歡迎<br />上車</span>
-            <span class="en">Welcome<br />aboard.</span>
-          </h1>
-          <p class="hero-copy">
-            <span class="zh">快速完成入場報到，累積真實出席紀錄，讓每一次活動參與都回到 Audience Data System。</span>
-            <span class="en">Fast entrance check-in for real attendance data, connected back to the Audience Data System.</span>
-          </p>
-          <div class="actions">
-            <button class="button primary" type="button" data-go="checkin">
-              <span class="zh">開始報到</span>
-              <span class="en">Start check-in</span>
-            </button>
-          </div>
-        </div>
-
-        <div class="bus-card" aria-label="Techno Bus visual">
-          <div class="route-line"></div>
-          <div class="bus-shape"></div>
-          <div class="ticket">
-            <small>
-              <span class="zh">登車報到證</span>
-              <span class="en">Boarding Check-in Pass</span>
-            </small>
-            <strong>TECHNO BUS 2026</strong>
-          </div>
-        </div>
-      </section>
-
-      <section id="checkin" class="section view" data-view="checkin">
-        <div>
-          <p class="section-kicker">
-            <span class="zh">公開報到頁</span>
-            <span class="en">Public check-in</span>
-          </p>
-          <h2 class="section-title">
-            <span class="zh">十秒完成<br />入口報到</span>
-            <span class="en">Check in<br />within 10 seconds</span>
-          </h2>
-          <p class="section-copy">
-            <span class="zh">來賓掃描入口 QR Code 後，只需要輸入 Email 或中文姓名。系統會先比對報名資料，再連結既有會員資料。</span>
-            <span class="en">Attendees scan the entrance QR code and enter an email or Chinese name. Registrations are checked before linking to the existing member profile.</span>
-          </p>
-        </div>
-
-        <form class="card form-card">
-          <h3>
-            <span class="zh">歡迎入場</span>
-            <span class="en">Welcome</span>
-          </h3>
-          <p>
-            <span class="zh">請輸入 Email 或中文姓名完成入場報到。</span>
-            <span class="en">Please enter your email or Chinese name to check in.</span>
-          </p>
-          <div class="field">
-            <label>
-              <span class="zh">Email 或中文姓名</span>
-              <span class="en">Email or Chinese name</span>
-            </label>
-            <div class="input">
-              <span class="zh">例如：mica@example.com 或 陳璽安</span>
-              <span class="en">Example: mica@example.com or 陳璽安</span>
-            </div>
-          </div>
-          <button class="button primary full" type="button" data-go="name-select">
-            <span class="zh">完成入場報到</span>
-            <span class="en">Check in</span>
-          </button>
-          <div class="meta">TECHNO BUS 2026 · <span class="zh">活動 ID</span><span class="en">Event ID</span> techno-bus-2026-0718</div>
-        </form>
-      </section>
-
-      <section id="confirm" class="section view" data-view="name-select">
-        <div>
-          <p class="section-kicker">
-            <span class="zh">點擊你的名字報到</span>
-            <span class="en">Tap your name to check in</span>
-          </p>
-          <h2 class="section-title">
-            <span class="zh">點擊你的<br />名字報到</span>
-            <span class="en">Tap your<br />name</span>
-          </h2>
-          <p class="section-copy">
-            <span class="zh">請確認下方資料，點擊你的名字完成報到。公開畫面會遮蔽 Email，並保留必要票種資訊。</span>
-            <span class="en">Confirm the masked details below, then tap your name to complete check-in.</span>
-          </p>
-        </div>
-
-        <div class="card">
-          <h3>
-            <span class="zh">點擊你的名字報到</span>
-            <span class="en">Tap your name to check in</span>
-          </h3>
-          <p>
-            <span class="zh">如果看到同名資料，請依遮蔽 Email 與票種選擇正確項目。</span>
-            <span class="en">If names are duplicated, use the masked email and ticket type to select the correct record.</span>
-          </p>
-          <div class="match-list" style="margin-top: 22px">
-            <div class="match">
-              <div><strong>陳x安</strong><span>mi***@example.com · VIP</span></div>
-              <button class="mini-button" type="button" data-go="success"><span class="zh">這是我</span><span class="en">This is me</span></button>
-            </div>
-            <div class="match">
-              <div><strong>陳x安</strong><span>ma***@example.com · GA</span></div>
-              <button class="mini-button" type="button" data-go="success"><span class="zh">這是我</span><span class="en">This is me</span></button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section view" data-view="success">
-        <div>
-          <p class="section-kicker">
-            <span class="zh">報到成功</span>
-            <span class="en">Success page</span>
-          </p>
-          <h2 class="section-title">
-            <span class="zh">導流社群<br />與抽獎互動</span>
-            <span class="en">Social traffic<br />and rewards</span>
-          </h2>
-          <p class="section-copy">
-            <span class="zh">完成報到後，導向品牌方社群，並保留抽獎入口，增加活動後互動。</span>
-            <span class="en">After successful check-in, attendees are guided to brand social channels and reward engagement.</span>
-          </p>
-        </div>
-
-        <div>
-          <div class="card success-card">
-            <h3>
-              <span class="zh">報到成功，歡迎回到 Techno Bus</span>
-              <span class="en">Check-in successful. Welcome back to Techno Bus.</span>
-            </h3>
-            <div class="success-grid">
-              <div class="stat"><small><span class="zh">活動</span><span class="en">Event</span></small><strong>TECHNO BUS 2026</strong></div>
-              <div class="stat"><small><span class="zh">來賓</span><span class="en">Attendee</span></small><strong>陳璽安</strong></div>
-              <div class="stat"><small><span class="zh">出席</span><span class="en">Attendance</span></small><strong><span class="zh">3 場</span><span class="en">3 event(s)</span></strong></div>
-            </div>
-            <p style="margin-top: 18px">
-              <span class="zh">你已參加我們 3 場活動。</span>
-              <span class="en">You have attended 3 event(s) with us.</span>
+      <section class="hero view is-active" data-view="home">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">TECHNO BUS <span class="zh">報到</span><span class="en">CHECK-IN</span></div>
+            <h1 class="hero-title"><span class="zh">歡迎上車</span><span class="en">Welcome aboard</span></h1>
+            <p class="hero-copy">
+              <span class="zh">快速完成入場報到，累積真實出席紀錄。</span>
+              <span class="en">Fast entrance check-in for real attendance records.</span>
             </p>
+            <div class="pill-row" aria-hidden="true">
+              <span class="pill"><span class="pill-icon">QR</span><span class="zh">QR 掃描入口</span><span class="en">QR entry</span></span>
+              <span class="pill"><span class="pill-icon">DB</span><span class="zh">連結會員資料庫</span><span class="en">CRM linked</span></span>
+              <span class="pill"><span class="pill-icon">🎁</span><span class="zh">抽獎互動</span><span class="en">Lucky draw</span></span>
+            </div>
+            <div class="actions">
+              <button class="button primary" type="button" data-go="checkin">
+                <span class="bus-logo" aria-hidden="true"></span>
+                <span class="zh">開始報到</span>
+                <span class="en">Start check-in</span>
+                <span class="arrow">→</span>
+              </button>
+              <button class="button secondary" type="button" data-go="name-select">
+                <span class="zh">工作人員確認</span>
+                <span class="en">Staff confirm</span>
+                <span>⌾</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="hero-art" aria-label="Techno Bus visual">
+            <div class="city"></div>
+            <div class="bus-hero">
+              <div class="bus-sign">TECHNO BUS</div>
+              <div class="headlights"></div>
+            </div>
+            <div class="route-glow"></div>
+            <div class="next-stop">NEXT STOP<br />THE NIGHT</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="step view" data-view="checkin">
+        <div class="step-card">
+          <aside class="ticket-card" aria-label="Boarding pass">
+            <div class="ticket-kicker">▣ <span class="zh">登車報到證</span><span class="en">Boarding pass</span></div>
+            <div class="ticket-list">
+              <div><span><span class="zh">活動</span><span class="en">Event</span></span><strong>TECHNO BUS 2026</strong></div>
+              <div><span><span class="zh">日期</span><span class="en">Date</span></span><strong>2026.07.18</strong></div>
+              <div><span><span class="zh">時間</span><span class="en">Time</span></span><strong>22:00 - LATE</strong></div>
+              <div><span><span class="zh">地點</span><span class="en">City</span></span><strong>TAIPEI CITY</strong></div>
+            </div>
+            <div class="barcode"></div>
+          </aside>
+
+          <div class="form-card">
+            <div class="step-number">1.</div>
+            <h2 class="step-title"><span class="zh">歡迎入場</span><span class="en">Welcome</span></h2>
+            <p class="step-text">
+              <span class="zh">請輸入 Email 或中文姓名完成入場報到。</span>
+              <span class="en">Please enter your email or Chinese name to check in.</span>
+            </p>
+            <div class="field">
+              <label><span class="zh">Email 或中文姓名</span><span class="en">Email or Chinese name</span></label>
+              <div class="input-shell"><span class="zh">Email 或中文姓名</span><span class="en">Email or Chinese name</span><span style="margin-left:auto">♙</span></div>
+            </div>
+            <button class="button primary full" type="button" data-go="name-select">
+              <span class="zh">完成入場報到</span>
+              <span class="en">Check in</span>
+              <span class="arrow">→</span>
+            </button>
+            <div class="meta">TECHNO BUS 2026 ・ <span class="zh">活動 ID</span><span class="en">Event ID</span> <strong>techno-bus-2026-0718</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="step view" data-view="name-select">
+        <div class="step-card name-step">
+          <div>
+            <div class="step-number">2.</div>
+            <h2 class="step-title">
+              <span class="zh">點擊你的<br />名字報到</span>
+              <span class="en">Tap your<br />name</span>
+            </h2>
+            <p class="step-text">
+              <span class="zh">找到多筆同名報名資料，請確認正確來賓。</span>
+              <span class="en">Multiple registrations found. Please choose the correct attendee.</span>
+            </p>
+            <div class="scan-icon">♙</div>
+          </div>
+
+          <div>
+            <div class="match-grid">
+              <article class="match-card is-selected">
+                <div class="match-name"><span class="radio-dot"></span>陳x安</div>
+                <div class="match-meta">mi***@example.com<br /><span class="zh">票種</span><span class="en">Ticket</span>　VIP</div>
+                <button class="button small secondary full" type="button" data-go="success"><span class="zh">確認此來賓</span><span class="en">Confirm</span></button>
+              </article>
+              <article class="match-card">
+                <div class="match-name"><span class="radio-dot"></span>陳x安</div>
+                <div class="match-meta">mi***@example.com<br /><span class="zh">票種</span><span class="en">Ticket</span>　VIP</div>
+                <button class="button small secondary full" type="button" data-go="success"><span class="zh">確認此來賓</span><span class="en">Confirm</span></button>
+              </article>
+              <article class="match-card">
+                <div class="match-name"><span class="radio-dot"></span>陳x安</div>
+                <div class="match-meta">mi***@example.com<br /><span class="zh">票種</span><span class="en">Ticket</span>　VIP</div>
+                <button class="button small secondary full" type="button" data-go="success"><span class="zh">確認此來賓</span><span class="en">Confirm</span></button>
+              </article>
+            </div>
+            <p class="note">ⓘ <span class="zh">請由工作人員確認正確來賓後進行報到，避免重複報到。</span><span class="en">Staff should confirm the attendee before check-in to avoid duplicates.</span></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="step view" data-view="success">
+        <div class="step-card success-step">
+          <div>
+            <div class="step-number">3.</div>
+            <h2 class="step-title">
+              <span class="zh">報到成功，<br />歡迎回到 Techno Bus</span>
+              <span class="en">Check-in successful,<br />welcome back</span>
+            </h2>
+            <div class="detail-list">
+              <div><span><span class="zh">活動</span><span class="en">Event</span></span><b>TECHNO BUS 2026</b></div>
+              <div><span><span class="zh">來賓</span><span class="en">Guest</span></span><b>陳璽安</b></div>
+              <div><span><span class="zh">出席</span><span class="en">Attended</span></span><b><strong>3</strong> <span class="zh">場活動</span><span class="en">events</span></b></div>
+              <div><span><span class="zh">報到時間</span><span class="en">Time</span></span><b>2026.07.18　22:45</b></div>
+            </div>
+          </div>
+
+          <div class="success-visual">
+            <div class="ticket-visual">
+              <h3>WELCOME ABOARD</h3>
+              <div class="bus-line-art"></div>
+              <div class="barcode" style="width: 180px"></div>
+            </div>
             <div class="socials">
-              <a href="#">Techno bus</a>
-              <a href="#">NextStop studio</a>
-              <a href="#">NextStop YouTube</a>
-              <a href="#">HENDUO MUSIC</a>
+              <a href="#">▣ Techno bus</a>
+              <a href="#">▣ NextStop studio</a>
+              <a href="#">▶ NextStop YouTube</a>
+              <a href="#">▥ HENDUO MUSIC</a>
             </div>
             <button class="button primary full" type="button" data-go="reward">
-              <span class="zh">參加抽獎</span>
-              <span class="en">Enter Lucky Draw</span>
+              🎁 <span class="zh">參加抽獎</span><span class="en">Enter Lucky Draw</span> <span class="arrow">→</span>
             </button>
           </div>
         </div>
       </section>
 
-      <section class="section view" data-view="reward">
-        <div>
-          <p class="section-kicker">
-            <span class="zh">抽獎結果</span>
-            <span class="en">Reward result</span>
-          </p>
-          <h2 class="section-title">
-            <span class="zh">請出示給<br />工作人員</span>
-            <span class="en">Show this<br />to staff</span>
-          </h2>
-          <p class="section-copy">
-            <span class="zh">獎項只能兌換一次。兌換時請讓工作人員確認狀態。</span>
-            <span class="en">Rewards can only be redeemed once. Staff will confirm the status during redemption.</span>
-          </p>
-        </div>
-
-        <div>
-          <div class="card reward-card" style="margin-top: 0">
-            <p class="section-kicker">
-              <span class="zh">抽獎結果</span>
-              <span class="en">Reward result</span>
+      <section class="step view" data-view="reward">
+        <div class="step-card reward-step">
+          <div class="reward-copy">
+            <div class="step-number">4.</div>
+            <h2 class="step-title"><span class="zh">抽獎結果</span><span class="en">Reward result</span></h2>
+            <p class="step-text">
+              <span class="zh">恭喜你獲得：</span>
+              <span class="en">Congratulations. You received:</span>
+              <strong><span class="zh">免費飲品兌換券</span><span class="en">Free drink voucher</span></strong>
             </p>
-            <h3 style="margin-top: 12px">
-              <span class="zh">恭喜你獲得：免費飲品兌換券</span>
-              <span class="en">Congratulations. You received: Free drink voucher.</span>
-            </h3>
-            <span class="status">
-              <span class="zh">尚未兌換</span>
-              <span class="en">Not redeemed</span>
-            </span>
-            <button class="button secondary full" type="button">
-              <span class="zh">出示給工作人員</span>
-              <span class="en">Show to staff</span>
-            </button>
+            <p class="step-text"><span class="zh">請出示此畫面給工作人員兌換。</span><span class="en">Please show this screen to staff for redemption.</span></p>
+            <button class="button secondary" type="button">▣ <span class="zh">出示給工作人員</span><span class="en">Show to staff</span></button>
+          </div>
+
+          <div class="reward-media">
+            <div class="drink"></div>
+            <div class="voucher" style="margin-top: 26px">
+              <h3><span class="zh">免費飲品兌換券</span><span class="en">Free drink voucher</span></h3>
+              <p class="section-copy" style="margin-top: 14px"><span class="zh">限兌換 飲品乙杯<br />於現場吧檯兌換</span><span class="en">Redeem one drink at the bar</span></p>
+              <div class="status"><span class="zh">尚未兌換</span><span class="en">Not redeemed</span></div>
+            </div>
           </div>
         </div>
       </section>
 
-      <footer>AUDIENCE DATA SYSTEM · Techno Bus Attendance Route</footer>
+      <section class="step view" data-view="thanks">
+        <div class="thanks">
+          <div class="step-number">5.</div>
+          <h2 class="step-title"><span class="zh">感謝搭乘 Techno Bus</span><span class="en">Thanks for riding Techno Bus</span></h2>
+          <p class="section-copy" style="margin-top: 20px"><span class="zh">你的參與讓我們的派對更精彩。下次活動再一起出發！</span><span class="en">Your attendance makes the night better. See you at the next stop.</span></p>
+          <div class="thanks-route"></div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div><strong>AUDIENCE DATA SYSTEM</strong> ・ Techno Bus Attendance Route</div>
+        <div class="barcode-wide" aria-hidden="true"></div>
+      </footer>
     </main>
 
     <script>
       const body = document.body;
       const toggle = document.querySelector(".language-toggle");
+      const validViews = new Set(["home", "checkin", "name-select", "success", "reward", "thanks"]);
 
       toggle.addEventListener("click", () => {
         const nextLang = body.dataset.lang === "zh" ? "en" : "zh";
@@ -777,8 +1162,6 @@
         document.documentElement.lang = nextLang === "zh" ? "zh-Hant" : "en";
         toggle.textContent = nextLang === "zh" ? "EN" : "中文";
       });
-
-      const validViews = new Set(["home", "checkin", "name-select", "success", "reward"]);
 
       function showView(name, pushHash = true) {
         const target = validViews.has(name) ? name : "home";
@@ -792,7 +1175,10 @@
       }
 
       document.querySelectorAll("[data-go]").forEach((button) => {
-        button.addEventListener("click", () => showView(button.dataset.go));
+        button.addEventListener("click", (event) => {
+          event.preventDefault();
+          showView(button.dataset.go);
+        });
       });
 
       showView(location.hash.replace("#", "") || "home", false);
