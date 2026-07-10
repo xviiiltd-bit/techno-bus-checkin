@@ -116,6 +116,14 @@
         min-height: 560px;
       }
 
+      .view {
+        display: none;
+      }
+
+      .view.is-active {
+        display: grid;
+      }
+
       .eyebrow,
       .section-kicker {
         color: var(--green);
@@ -290,7 +298,7 @@
         grid-template-columns: minmax(0, 0.82fr) minmax(320px, 1.18fr);
         gap: 28px;
         align-items: start;
-        margin-top: 96px;
+        min-height: 560px;
       }
 
       .section-title {
@@ -514,6 +522,14 @@
           min-height: auto;
         }
 
+        .view {
+          display: none;
+        }
+
+        .view.is-active {
+          display: block;
+        }
+
         .bus-card,
         .section > .card,
         .section > div + div {
@@ -549,7 +565,7 @@
         <button class="language-toggle" type="button" aria-label="Switch language">EN</button>
       </header>
 
-      <section id="top" class="hero">
+      <section id="top" class="hero view is-active" data-view="home">
         <div>
           <p class="eyebrow">
             <span class="zh">TECHNO BUS 報到</span>
@@ -564,14 +580,10 @@
             <span class="en">Fast entrance check-in for real attendance data, connected back to the Audience Data System.</span>
           </p>
           <div class="actions">
-            <a class="button primary" href="#checkin">
+            <button class="button primary" type="button" data-go="checkin">
               <span class="zh">開始報到</span>
               <span class="en">Start check-in</span>
-            </a>
-            <a class="button secondary" href="#confirm">
-              <span class="zh">工作人員確認</span>
-              <span class="en">Staff confirm</span>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -588,7 +600,7 @@
         </div>
       </section>
 
-      <section id="checkin" class="section">
+      <section id="checkin" class="section view" data-view="checkin">
         <div>
           <p class="section-kicker">
             <span class="zh">公開報到頁</span>
@@ -623,7 +635,7 @@
               <span class="en">Example: mica@example.com or 陳璽安</span>
             </div>
           </div>
-          <button class="button primary full" type="button">
+          <button class="button primary full" type="button" data-go="name-select">
             <span class="zh">完成入場報到</span>
             <span class="en">Check in</span>
           </button>
@@ -631,45 +643,45 @@
         </form>
       </section>
 
-      <section id="confirm" class="section">
+      <section id="confirm" class="section view" data-view="name-select">
         <div>
           <p class="section-kicker">
-            <span class="zh">重名處理</span>
-            <span class="en">Duplicate names</span>
+            <span class="zh">點擊你的名字報到</span>
+            <span class="en">Tap your name to check in</span>
           </p>
           <h2 class="section-title">
-            <span class="zh">只顯示<br />必要資訊</span>
-            <span class="en">Only necessary<br />data is shown</span>
+            <span class="zh">點擊你的<br />名字報到</span>
+            <span class="en">Tap your<br />name</span>
           </h2>
           <p class="section-copy">
-            <span class="zh">若同名資料超過一筆，現場工作人員確認來賓；公開畫面一律遮蔽 Email 與個資。</span>
-            <span class="en">If multiple matching names exist, staff confirms the attendee. Public-facing data stays masked.</span>
+            <span class="zh">請確認下方資料，點擊你的名字完成報到。公開畫面會遮蔽 Email，並保留必要票種資訊。</span>
+            <span class="en">Confirm the masked details below, then tap your name to complete check-in.</span>
           </p>
         </div>
 
         <div class="card">
           <h3>
-            <span class="zh">需要工作人員確認</span>
-            <span class="en">Staff confirmation required</span>
+            <span class="zh">點擊你的名字報到</span>
+            <span class="en">Tap your name to check in</span>
           </h3>
           <p>
-            <span class="zh">找到多筆同名報名資料，請確認正確來賓。</span>
-            <span class="en">Multiple registrations found. Please confirm the correct attendee.</span>
+            <span class="zh">如果看到同名資料，請依遮蔽 Email 與票種選擇正確項目。</span>
+            <span class="en">If names are duplicated, use the masked email and ticket type to select the correct record.</span>
           </p>
           <div class="match-list" style="margin-top: 22px">
             <div class="match">
               <div><strong>陳x安</strong><span>mi***@example.com · VIP</span></div>
-              <button class="mini-button" type="button"><span class="zh">確認</span><span class="en">Confirm</span></button>
+              <button class="mini-button" type="button" data-go="success"><span class="zh">這是我</span><span class="en">This is me</span></button>
             </div>
             <div class="match">
               <div><strong>陳x安</strong><span>ma***@example.com · GA</span></div>
-              <button class="mini-button" type="button"><span class="zh">確認</span><span class="en">Confirm</span></button>
+              <button class="mini-button" type="button" data-go="success"><span class="zh">這是我</span><span class="en">This is me</span></button>
             </div>
           </div>
         </div>
       </section>
 
-      <section class="section">
+      <section class="section view" data-view="success">
         <div>
           <p class="section-kicker">
             <span class="zh">報到成功</span>
@@ -706,13 +718,32 @@
               <a href="#">NextStop YouTube</a>
               <a href="#">HENDUO MUSIC</a>
             </div>
-            <button class="button primary full" type="button">
+            <button class="button primary full" type="button" data-go="reward">
               <span class="zh">參加抽獎</span>
               <span class="en">Enter Lucky Draw</span>
             </button>
           </div>
+        </div>
+      </section>
 
-          <div class="card reward-card">
+      <section class="section view" data-view="reward">
+        <div>
+          <p class="section-kicker">
+            <span class="zh">抽獎結果</span>
+            <span class="en">Reward result</span>
+          </p>
+          <h2 class="section-title">
+            <span class="zh">請出示給<br />工作人員</span>
+            <span class="en">Show this<br />to staff</span>
+          </h2>
+          <p class="section-copy">
+            <span class="zh">獎項只能兌換一次。兌換時請讓工作人員確認狀態。</span>
+            <span class="en">Rewards can only be redeemed once. Staff will confirm the status during redemption.</span>
+          </p>
+        </div>
+
+        <div>
+          <div class="card reward-card" style="margin-top: 0">
             <p class="section-kicker">
               <span class="zh">抽獎結果</span>
               <span class="en">Reward result</span>
@@ -746,6 +777,25 @@
         document.documentElement.lang = nextLang === "zh" ? "zh-Hant" : "en";
         toggle.textContent = nextLang === "zh" ? "EN" : "中文";
       });
+
+      const validViews = new Set(["home", "checkin", "name-select", "success", "reward"]);
+
+      function showView(name, pushHash = true) {
+        const target = validViews.has(name) ? name : "home";
+        document.querySelectorAll("[data-view]").forEach((view) => {
+          view.classList.toggle("is-active", view.dataset.view === target);
+        });
+        if (pushHash) {
+          history.replaceState(null, "", target === "home" ? location.pathname : `#${target}`);
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      document.querySelectorAll("[data-go]").forEach((button) => {
+        button.addEventListener("click", () => showView(button.dataset.go));
+      });
+
+      showView(location.hash.replace("#", "") || "home", false);
     </script>
   </body>
 </html>
