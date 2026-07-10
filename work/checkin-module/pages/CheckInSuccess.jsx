@@ -9,7 +9,7 @@ const copy = {
     route: "Techno Bus 入場完成",
     pass: "已登車",
     eyebrow: "報到成功",
-    title: "報到成功，歡迎回到 Techno Bus。",
+    title: "報到成功，歡迎回到 Techno Bus",
     loading: "正在載入報到資訊...",
     event: "活動",
     attendee: "來賓",
