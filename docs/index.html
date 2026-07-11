@@ -724,6 +724,116 @@
         grid-template-columns: 0.95fr 1.05fr;
       }
 
+      .reward-options {
+        display: grid;
+        gap: 18px;
+      }
+
+      .reward-card {
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(166, 255, 0, 0.36);
+        border-radius: 20px;
+        background:
+          linear-gradient(135deg, rgba(166, 255, 0, 0.12), transparent 46%),
+          rgba(6, 8, 8, 0.78);
+        padding: 24px;
+        box-shadow: inset 0 0 28px rgba(166, 255, 0, 0.05);
+      }
+
+      .reward-card h3 {
+        margin: 0;
+        color: var(--green);
+        font-size: 24px;
+      }
+
+      .reward-card p {
+        margin: 12px 0 0;
+      }
+
+      .discount-ticket {
+        margin-top: 16px;
+        border: 1px dashed rgba(166, 255, 0, 0.58);
+        border-radius: 18px;
+        background:
+          repeating-linear-gradient(90deg, rgba(166, 255, 0, 0.12) 0 2px, transparent 2px 18px),
+          rgba(166, 255, 0, 0.08);
+        padding: 18px;
+      }
+
+      .discount-ticket small {
+        display: block;
+        color: var(--dim);
+        font-size: 12px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .discount-ticket strong {
+        display: block;
+        margin-top: 8px;
+        color: var(--text);
+        font-size: clamp(24px, 4vw, 42px);
+        line-height: 1;
+      }
+
+      .discount-name {
+        margin-top: 14px;
+        color: var(--green);
+        font-size: 18px;
+        font-weight: 900;
+      }
+
+      .guidance-widget {
+        display: grid;
+        min-height: 280px;
+        margin-top: 16px;
+        place-items: center;
+        border: 1px solid rgba(166, 255, 0, 0.36);
+        border-radius: 18px;
+        background:
+          radial-gradient(circle at 50% 18%, rgba(166, 255, 0, 0.18), transparent 9rem),
+          linear-gradient(135deg, rgba(166, 255, 0, 0.08), transparent 56%),
+          #050706;
+        padding: 24px;
+        text-align: center;
+      }
+
+      .guidance-card {
+        width: min(250px, 100%);
+        min-height: 170px;
+        border: 1px solid rgba(166, 255, 0, 0.56);
+        border-radius: 20px;
+        background:
+          repeating-linear-gradient(135deg, rgba(166, 255, 0, 0.12) 0 1px, transparent 1px 18px),
+          rgba(0, 0, 0, 0.36);
+        box-shadow: var(--shadow);
+        padding: 22px;
+      }
+
+      .guidance-card small {
+        display: block;
+        color: var(--dim);
+        font-size: 11px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .guidance-card strong {
+        display: block;
+        margin-top: 14px;
+        color: var(--green);
+        font-size: 28px;
+        line-height: 1.15;
+      }
+
+      .guidance-fallback {
+        display: inline-flex;
+        margin-top: 12px;
+        color: var(--green);
+        font-weight: 850;
+      }
+
       .drink {
         position: relative;
         width: 190px;
@@ -1134,20 +1244,46 @@
             <div class="step-number">4.</div>
             <h2 class="step-title"><span class="zh">抽獎結果</span><span class="en">Reward result</span></h2>
             <p class="step-text">
-              <span class="zh">恭喜你獲得：</span>
-              <span class="en">Congratulations. You received:</span>
-              <strong><span class="zh">免費飲品兌換券</span><span class="en">Free drink voucher</span></strong>
+              <span class="zh">抽獎結果會從飲品、下次活動折抵券，或創作人指引牌中顯示一種。</span>
+              <span class="en">The lucky draw shows one result: a drink, next-event discount, or Creator Compass guidance card.</span>
             </p>
-            <p class="step-text"><span class="zh">請出示此畫面給工作人員兌換。</span><span class="en">Please show this screen to staff for redemption.</span></p>
+            <p class="step-text"><span class="zh">中獎券請出示此畫面給工作人員兌換；折抵券請截圖儲存。</span><span class="en">Show prize vouchers to staff. Screenshot and save discount vouchers.</span></p>
             <button class="button secondary" type="button">▣ <span class="zh">出示給工作人員</span><span class="en">Show to staff</span></button>
           </div>
 
           <div class="reward-media">
-            <div class="drink"></div>
-            <div class="voucher" style="margin-top: 26px">
-              <h3><span class="zh">免費飲品兌換券</span><span class="en">Free drink voucher</span></h3>
-              <p class="section-copy" style="margin-top: 14px"><span class="zh">限兌換 飲品乙杯<br />於現場吧檯兌換</span><span class="en">Redeem one drink at the bar</span></p>
-              <div class="status"><span class="zh">尚未兌換</span><span class="en">Not redeemed</span></div>
+            <div class="reward-options">
+              <article class="reward-card">
+                <h3><span class="zh">飲品</span><span class="en">Drink</span></h3>
+                <div class="drink" aria-hidden="true"></div>
+                <p class="section-copy"><span class="zh">免費飲品兌換券，限兌換飲品乙杯。</span><span class="en">Free drink voucher. Redeem one drink.</span></p>
+                <div class="status"><span class="zh">尚未兌換</span><span class="en">Not redeemed</span></div>
+              </article>
+
+              <article class="reward-card">
+                <h3><span class="zh">下一次參加活動 -100 元</span><span class="en">NT$100 off next event</span></h3>
+                <p class="section-copy"><span class="zh">請截圖儲存此券，下一次參加活動時出示使用。</span><span class="en">Screenshot and save this voucher. Show it at your next event.</span></p>
+                <div class="discount-ticket">
+                  <small>TECHNO BUS NEXT RIDE VOUCHER</small>
+                  <strong>- NT$100</strong>
+                  <div class="discount-name"><span class="zh">持有人：陳璽安</span><span class="en">Holder: Chen Xi An</span></div>
+                </div>
+                <div class="status"><span class="zh">截圖儲存</span><span class="en">Screenshot to save</span></div>
+              </article>
+
+              <article class="reward-card">
+                <h3><span class="zh">未中獎：創作人指引牌</span><span class="en">No prize: Creator Compass card</span></h3>
+                <p class="section-copy"><span class="zh">這次沒有抽中實體獎項，送你一張創作人指引牌。</span><span class="en">No physical prize this time. Receive a Creator Compass guidance card.</span></p>
+                <div class="guidance-widget" role="group" aria-label="Creator Compass guidance card">
+                  <div class="guidance-card">
+                    <small>Creator Compass</small>
+                    <strong><span class="zh">抽一張<br />創作人指引牌</span><span class="en">Draw a<br />guidance card</span></strong>
+                  </div>
+                </div>
+                <a class="guidance-fallback" href="https://creatorcompasstw.com/" target="_blank" rel="noreferrer">
+                  <span class="zh">開啟創作人指引</span><span class="en">Open Creator Compass</span>
+                </a>
+              </article>
             </div>
           </div>
         </div>
