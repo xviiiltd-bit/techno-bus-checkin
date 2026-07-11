@@ -172,7 +172,7 @@
       }
 
       .view {
-        display: block;
+        display: none;
       }
 
       .view.is-active {
@@ -1164,8 +1164,8 @@
               <span class="en">Tap your<br />name</span>
             </h2>
             <p class="step-text">
-              <span class="zh">找到多筆同名報名資料，請確認正確來賓。</span>
-              <span class="en">Multiple registrations found. Please choose the correct attendee.</span>
+              <span class="zh">重名處理：只顯示必要資訊。若同名資料超過一筆，現場工作人員確認來賓；公開畫面一律遮蔽 Email 與個資。</span>
+              <span class="en">Duplicate-name handling: only necessary information is shown. If multiple matching names exist, on-site staff confirms the attendee; public screens always mask email and personal data.</span>
             </p>
             <div class="scan-icon">♙</div>
           </div>
@@ -1308,10 +1308,13 @@
 
       function showView(name, pushHash = true) {
         const target = validViews.has(name) ? name : "home";
+        document.querySelectorAll("[data-view]").forEach((view) => {
+          view.classList.toggle("is-active", view.dataset.view === target);
+        });
         if (pushHash) {
           history.replaceState(null, "", target === "home" ? location.pathname : `#${target}`);
         }
-        document.querySelector(`[data-view="${target}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
       document.querySelectorAll("[data-go]").forEach((button) => {
