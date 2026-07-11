@@ -94,7 +94,7 @@
         grid-template-columns: auto 1fr auto;
         align-items: center;
         gap: 22px;
-        min-height: 58px;
+        min-height: 108px;
         border-bottom: 1px solid rgba(166, 255, 0, 0.32);
       }
 
@@ -108,6 +108,14 @@
         letter-spacing: -0.04em;
         text-transform: uppercase;
         text-shadow: 0 0 18px rgba(166, 255, 0, 0.42);
+      }
+
+      .brand-logo {
+        display: block;
+        width: auto;
+        height: 92px;
+        object-fit: contain;
+        filter: drop-shadow(0 0 18px rgba(166, 255, 0, 0.34));
       }
 
       .bus-logo {
@@ -850,6 +858,10 @@
           grid-template-columns: 1fr auto;
         }
 
+        .brand-logo {
+          height: 72px;
+        }
+
         .nav {
           display: none;
         }
@@ -957,8 +969,7 @@
     <main class="page">
       <header class="topbar">
         <a class="brand" href="#home" data-go="home" aria-label="Techno Bus Check-in">
-          <span class="bus-logo" aria-hidden="true"></span>
-          <span>TECHNO BUS</span>
+          <img class="brand-logo" src="assets/techno-bus-logo.png" alt="TECHNO BUS TW" />
         </a>
         <nav class="nav" aria-label="Primary">
           <a href="#checkin" data-go="checkin"><span class="zh">活動報到</span><span class="en">Check-in</span></a>
