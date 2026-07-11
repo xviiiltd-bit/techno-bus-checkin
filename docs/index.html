@@ -1338,7 +1338,7 @@
         const scoped = eventRegistrations.filter((registration) => registration.eventId === eventId);
         if (!query) return [];
 
-        const emailMatch = scoped.filter((registration) => registration.email.toLowerCase() === query.toLowerCase());
+        const emailMatch = scoped.filter((registration) => (registration.email || "").toLowerCase() === query.toLowerCase());
         if (emailMatch.length) return emailMatch;
 
         return scoped.filter((registration) => registration.name === query);
@@ -1349,7 +1349,13 @@
         localRegistrationsLoaded = true;
 
         try {
-          const response = await fetch(localRegistrationDataUrl, { cache: "no-store" });
+          const controller = new AbortController();
+          const timeoutId = window.setTimeout(() => controller.abort(), 5000);
+          const response = await fetch(localRegistrationDataUrl, {
+            cache: "no-store",
+            signal: controller.signal,
+          });
+          window.clearTimeout(timeoutId);
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
           const registrations = await response.json();
           eventRegistrations = registrations;
@@ -1423,7 +1429,13 @@
             <div class="match-meta"><span class="zh">正在連接活動名單資料庫。</span><span class="en">Connecting to event registration data.</span></div>
           </article>
         `;
-        const matches = await lookupRegistrations();
+        let matches = [];
+        try {
+          matches = await lookupRegistrations();
+        } catch (error) {
+          registrationLoadError = "名單查詢逾時，請返回上一頁重新輸入。";
+          matches = [];
+        }
         currentMatches = matches;
         grid.classList.toggle("single-match", matches.length === 1);
         grid.classList.toggle("empty-match", matches.length === 0);
@@ -1436,8 +1448,12 @@
                 <span class="zh">請確認 Email 或報名名字是否正確。</span><span class="en">Please check the email or registered name.</span>
                 ${registrationLoadError ? `<br /><br /><span class="zh">${registrationLoadError}</span><span class="en">${registrationLoadError}</span>` : ""}
               </div>
+              <button class="button small secondary full" type="button" data-go-back-checkin>
+                <span class="zh">返回上一頁</span><span class="en">Go back</span>
+              </button>
             </article>
           `;
+          grid.querySelector("[data-go-back-checkin]").addEventListener("click", () => showView("checkin"));
           return;
         }
 
