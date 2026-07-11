@@ -610,6 +610,14 @@
         gap: 22px;
       }
 
+      .match-grid.single-match {
+        grid-template-columns: minmax(220px, 360px);
+      }
+
+      .match-grid.empty-match {
+        grid-template-columns: 1fr;
+      }
+
       .match-card {
         min-height: 232px;
         border: 1px solid rgba(255, 255, 255, 0.14);
@@ -621,6 +629,12 @@
       .match-card.is-selected {
         border-color: var(--green);
         box-shadow: var(--shadow);
+      }
+
+      .match-card.empty {
+        min-height: 150px;
+        border-style: dashed;
+        color: var(--muted);
       }
 
       .radio-dot {
@@ -660,6 +674,29 @@
         grid-template-columns: 0.9fr 1.1fr;
       }
 
+      .success-visual {
+        position: relative;
+      }
+
+      .success-visual::before,
+      .success-visual::after {
+        position: absolute;
+        top: 38px;
+        color: rgba(166, 255, 0, 0.32);
+        font-size: 42px;
+        font-weight: 950;
+        letter-spacing: -0.2em;
+        content: ">>>>";
+      }
+
+      .success-visual::before {
+        left: 6px;
+      }
+
+      .success-visual::after {
+        right: 8px;
+      }
+
       .detail-list {
         display: grid;
         gap: 16px;
@@ -683,9 +720,18 @@
       }
 
       .ticket-visual {
+        position: relative;
         min-height: 230px;
         padding: 34px;
         transform: rotate(-4deg);
+        border: 1px solid rgba(166, 255, 0, 0.5);
+        border-radius: 24px;
+        background:
+          linear-gradient(135deg, rgba(166, 255, 0, 0.14), transparent 42%),
+          linear-gradient(160deg, rgba(9, 15, 13, 0.96), rgba(0, 0, 0, 0.64));
+        box-shadow:
+          inset 0 0 42px rgba(166, 255, 0, 0.08),
+          0 0 54px rgba(166, 255, 0, 0.18);
       }
 
       .ticket-visual h3 {
@@ -1162,23 +1208,7 @@
           </div>
 
           <div>
-            <div class="match-grid">
-              <article class="match-card is-selected">
-                <div class="match-name"><span class="radio-dot"></span>陳x安</div>
-                <div class="match-meta">mi***@example.com<br /><span class="zh">票種</span><span class="en">Ticket</span>　VIP</div>
-                <button class="button small secondary full" type="button" data-go="success"><span class="zh">確認此來賓</span><span class="en">Confirm</span></button>
-              </article>
-              <article class="match-card">
-                <div class="match-name"><span class="radio-dot"></span>陳x安</div>
-                <div class="match-meta">mi***@example.com<br /><span class="zh">票種</span><span class="en">Ticket</span>　VIP</div>
-                <button class="button small secondary full" type="button" data-go="success"><span class="zh">確認此來賓</span><span class="en">Confirm</span></button>
-              </article>
-              <article class="match-card">
-                <div class="match-name"><span class="radio-dot"></span>陳x安</div>
-                <div class="match-meta">mi***@example.com<br /><span class="zh">票種</span><span class="en">Ticket</span>　VIP</div>
-                <button class="button small secondary full" type="button" data-go="success"><span class="zh">確認此來賓</span><span class="en">Confirm</span></button>
-              </article>
-            </div>
+            <div id="match-grid" class="match-grid"></div>
             <p class="note">ⓘ <span class="zh">請點擊你的名字完成報到，避免重複報到。</span><span class="en">Tap your name to complete check-in and avoid duplicate check-ins.</span></p>
           </div>
         </div>
@@ -1189,13 +1219,13 @@
           <div>
             <div class="step-number">3.</div>
             <h2 class="step-title">
-              <span class="zh">報到成功，<br />歡迎回到 Techno Bus。</span>
+              <span class="zh">報到成功，<br />歡迎回到 Techno Bus</span>
               <span class="en">Check-in successful,<br />welcome back</span>
             </h2>
             <div class="detail-list">
               <div><span><span class="zh">活動</span><span class="en">Event</span></span><b>TECHNO BUS 2026</b></div>
-              <div><span><span class="zh">來賓</span><span class="en">Guest</span></span><b>陳璽安</b></div>
-              <div><span><span class="zh">出席</span><span class="en">Attended</span></span><b><strong>3</strong> <span class="zh">場活動</span><span class="en">events</span></b></div>
+              <div><span><span class="zh">來賓</span><span class="en">Guest</span></span><b id="success-name">陳璽安</b></div>
+              <div><span><span class="zh">出席</span><span class="en">Attended</span></span><b><strong id="success-count">3</strong> <span class="zh">場活動</span><span class="en">events</span></b></div>
               <div><span><span class="zh">報到時間</span><span class="en">Time</span></span><b>2026.07.18　22:45</b></div>
             </div>
           </div>
@@ -1224,48 +1254,12 @@
           <div class="reward-copy">
             <div class="step-number">4.</div>
             <h2 class="step-title"><span class="zh">抽獎結果</span><span class="en">Reward result</span></h2>
-            <p class="step-text">
-              <span class="zh">抽獎結果會從飲品、下次活動折抵券，或創作人指引牌中顯示一種。</span>
-              <span class="en">The lucky draw shows one result: a drink, next-event discount, or Creator Compass guidance card.</span>
-            </p>
-            <p class="step-text"><span class="zh">中獎券請出示此畫面兌換；折抵券請截圖儲存。</span><span class="en">Show prize vouchers for redemption. Screenshot and save discount vouchers.</span></p>
+            <p class="step-text"><span class="zh">中獎券請出示此畫面兌換；折抵券請截圖儲存</span><span class="en">Show prize vouchers for redemption. Screenshot and save discount vouchers</span></p>
             <button class="button secondary" type="button">▣ <span class="zh">出示兌換畫面</span><span class="en">Show redemption screen</span></button>
           </div>
 
           <div class="reward-media">
-            <div class="reward-options">
-              <article class="reward-card">
-                <h3><span class="zh">飲品</span><span class="en">Drink</span></h3>
-                <div class="drink" aria-hidden="true"></div>
-                <p class="section-copy"><span class="zh">免費飲品兌換券，限兌換飲品乙杯。</span><span class="en">Free drink voucher. Redeem one drink.</span></p>
-                <div class="status"><span class="zh">尚未兌換</span><span class="en">Not redeemed</span></div>
-              </article>
-
-              <article class="reward-card">
-                <h3><span class="zh">下一次參加活動 -100 元</span><span class="en">NT$100 off next event</span></h3>
-                <p class="section-copy"><span class="zh">請截圖儲存此券，下一次參加活動時出示使用。</span><span class="en">Screenshot and save this voucher. Show it at your next event.</span></p>
-                <div class="discount-ticket">
-                  <small>TECHNO BUS NEXT RIDE VOUCHER</small>
-                  <strong>- NT$100</strong>
-                  <div class="discount-name"><span class="zh">持有人：陳璽安</span><span class="en">Holder: Chen Xi An</span></div>
-                </div>
-                <div class="status"><span class="zh">截圖儲存</span><span class="en">Screenshot to save</span></div>
-              </article>
-
-              <article class="reward-card">
-                <h3><span class="zh">未中獎：創作人指引牌</span><span class="en">No prize: Creator Compass card</span></h3>
-                <p class="section-copy"><span class="zh">這次沒有抽中實體獎項，送你一張創作人指引牌。</span><span class="en">No physical prize this time. Receive a Creator Compass guidance card.</span></p>
-                <div class="guidance-widget" role="group" aria-label="Creator Compass guidance card">
-                  <div class="guidance-card">
-                    <small>Creator Compass</small>
-                    <strong><span class="zh">抽一張<br />創作人指引牌</span><span class="en">Draw a<br />guidance card</span></strong>
-                  </div>
-                </div>
-                <a class="guidance-fallback" href="https://creatorcompasstw.com/" target="_blank" rel="noreferrer">
-                  <span class="zh">開啟創作人指引</span><span class="en">Open Creator Compass</span>
-                </a>
-              </article>
-            </div>
+            <div id="reward-result" class="reward-options"></div>
           </div>
         </div>
       </section>
@@ -1289,6 +1283,35 @@
       const body = document.body;
       const toggle = document.querySelector(".language-toggle");
       const validViews = new Set(["home", "checkin", "name-select", "success", "reward", "thanks"]);
+      const eventId = "techno-bus-2026-0718";
+      const eventRegistrations = [
+        {
+          id: "reg-001",
+          eventId,
+          name: "陳璽安",
+          email: "mica@example.com",
+          ticketType: "VIP",
+          totalCheckins: 3,
+        },
+        {
+          id: "reg-002",
+          eventId,
+          name: "陳文安",
+          email: "wenan01@example.com",
+          ticketType: "一般票",
+          totalCheckins: 1,
+        },
+        {
+          id: "reg-003",
+          eventId,
+          name: "陳文安",
+          email: "wenan02@example.com",
+          ticketType: "VIP",
+          totalCheckins: 2,
+        },
+      ];
+      let selectedAttendee = eventRegistrations[0];
+      let rewardDrawn = false;
 
       toggle.addEventListener("click", () => {
         const nextLang = body.dataset.lang === "zh" ? "en" : "zh";
@@ -1297,8 +1320,120 @@
         toggle.textContent = nextLang === "zh" ? "EN" : "中文";
       });
 
+      function maskName(name) {
+        if (!name) return "";
+        if (name.length <= 2) return `${name[0]}x`;
+        return `${name[0]}x${name[name.length - 1]}`;
+      }
+
+      function maskEmail(email) {
+        const [local, domain] = email.split("@");
+        if (!domain) return email;
+        return `${local.slice(0, 2)}***@${domain}`;
+      }
+
+      function findRegistrations() {
+        const query = document.querySelector("#checkin-query").value.trim();
+        const scoped = eventRegistrations.filter((registration) => registration.eventId === eventId);
+        if (!query) return [];
+
+        const emailMatch = scoped.filter((registration) => registration.email.toLowerCase() === query.toLowerCase());
+        if (emailMatch.length) return emailMatch;
+
+        return scoped.filter((registration) => registration.name === query);
+      }
+
+      function updateSuccess(attendee) {
+        selectedAttendee = attendee;
+        document.querySelector("#success-name").textContent = attendee.name;
+        document.querySelector("#success-count").textContent = String(attendee.totalCheckins);
+        rewardDrawn = false;
+      }
+
+      function renderMatches() {
+        const matches = findRegistrations();
+        const grid = document.querySelector("#match-grid");
+        grid.classList.toggle("single-match", matches.length === 1);
+        grid.classList.toggle("empty-match", matches.length === 0);
+
+        if (!matches.length) {
+          grid.innerHTML = `
+            <article class="match-card empty">
+              <div class="match-name"><span class="zh">查無報名資料</span><span class="en">No registration found</span></div>
+              <div class="match-meta"><span class="zh">請確認 Email 或報名名字是否正確。</span><span class="en">Please check the email or registered name.</span></div>
+            </article>
+          `;
+          return;
+        }
+
+        grid.innerHTML = matches.map((registration, index) => `
+          <article class="match-card ${index === 0 ? "is-selected" : ""}">
+            <div class="match-name"><span class="radio-dot"></span>${maskName(registration.name)}</div>
+            <div class="match-meta">${maskEmail(registration.email)}<br /><span class="zh">票種</span><span class="en">Ticket</span>　${registration.ticketType}</div>
+            <button class="button small secondary full" type="button" data-confirm-registration="${registration.id}">
+              <span class="zh">確認此來賓</span><span class="en">Confirm</span>
+            </button>
+          </article>
+        `).join("");
+
+        grid.querySelectorAll("[data-confirm-registration]").forEach((button) => {
+          button.addEventListener("click", () => {
+            const attendee = eventRegistrations.find((registration) => registration.id === button.dataset.confirmRegistration);
+            updateSuccess(attendee);
+            showView("success");
+          });
+        });
+      }
+
+      function renderReward() {
+        const holderName = selectedAttendee?.name || "陳璽安";
+        const rewards = [
+          `
+            <article class="reward-card">
+              <h3><span class="zh">飲品</span><span class="en">Drink</span></h3>
+              <div class="drink" aria-hidden="true"></div>
+              <p class="section-copy"><span class="zh">免費飲品兌換券，限兌換飲品乙杯。</span><span class="en">Free drink voucher. Redeem one drink.</span></p>
+              <div class="status"><span class="zh">尚未兌換</span><span class="en">Not redeemed</span></div>
+            </article>
+          `,
+          `
+            <article class="reward-card">
+              <h3><span class="zh">下一次參加活動 -100 元</span><span class="en">NT$100 off next event</span></h3>
+              <p class="section-copy"><span class="zh">請截圖儲存此券，下一次參加活動時出示使用。</span><span class="en">Screenshot and save this voucher. Show it at your next event.</span></p>
+              <div class="discount-ticket">
+                <small>TECHNO BUS NEXT RIDE VOUCHER</small>
+                <strong>- NT$100</strong>
+                <div class="discount-name"><span class="zh">持有人：${holderName}</span><span class="en">Holder: ${holderName}</span></div>
+              </div>
+              <div class="status"><span class="zh">截圖儲存</span><span class="en">Screenshot to save</span></div>
+            </article>
+          `,
+          `
+            <article class="reward-card">
+              <h3><span class="zh">未中獎：創作人指引牌</span><span class="en">No prize: Creator Compass card</span></h3>
+              <p class="section-copy"><span class="zh">這次沒有抽中實體獎項，送你一張創作人指引牌。</span><span class="en">No physical prize this time. Receive a Creator Compass guidance card.</span></p>
+              <div class="guidance-widget" role="group" aria-label="Creator Compass guidance card">
+                <div class="guidance-card">
+                  <small>Creator Compass</small>
+                  <strong><span class="zh">抽一張<br />創作人指引牌</span><span class="en">Draw a<br />guidance card</span></strong>
+                </div>
+              </div>
+              <a class="guidance-fallback" href="https://creatorcompasstw.com/" target="_blank" rel="noreferrer">
+                <span class="zh">開啟創作人指引</span><span class="en">Open Creator Compass</span>
+              </a>
+            </article>
+          `,
+        ];
+        const result = document.querySelector("#reward-result");
+        const rewardIndex = Math.floor(Math.random() * rewards.length);
+        result.innerHTML = rewards[rewardIndex];
+        rewardDrawn = true;
+      }
+
       function showView(name, pushHash = true) {
         const target = validViews.has(name) ? name : "home";
+        if (target === "name-select") renderMatches();
+        if (target === "reward" && !rewardDrawn) renderReward();
         document.querySelectorAll("[data-view]").forEach((view) => {
           view.classList.toggle("is-active", view.dataset.view === target);
         });
