@@ -16,11 +16,36 @@
         --line: rgba(166, 255, 0, 0.34);
         --green: #a6ff00;
         --green-2: #76ff03;
+        --green-soft: rgba(166, 255, 0, 0.16);
+        --green-hot: rgba(166, 255, 0, 0.72);
         --text: #f4f7ef;
         --muted: rgba(244, 247, 239, 0.64);
         --dim: rgba(244, 247, 239, 0.38);
         --stroke: rgba(255, 255, 255, 0.1);
         --shadow: 0 0 34px rgba(166, 255, 0, 0.2);
+      }
+
+      @keyframes scan-drift {
+        from {
+          transform: translateY(-22%);
+        }
+
+        to {
+          transform: translateY(22%);
+        }
+      }
+
+      @keyframes neon-pulse {
+        0%,
+        100% {
+          opacity: 0.62;
+          filter: drop-shadow(0 0 10px rgba(166, 255, 0, 0.34));
+        }
+
+        50% {
+          opacity: 1;
+          filter: drop-shadow(0 0 22px rgba(166, 255, 0, 0.78));
+        }
       }
 
       * {
@@ -51,6 +76,8 @@
         z-index: -2;
         pointer-events: none;
         background:
+          radial-gradient(circle at 18% 82%, rgba(166, 255, 0, 0.11), transparent 18rem),
+          linear-gradient(115deg, transparent 0 46%, rgba(166, 255, 0, 0.09) 48%, transparent 52% 100%),
           linear-gradient(rgba(166, 255, 0, 0.03) 1px, transparent 1px),
           linear-gradient(90deg, rgba(166, 255, 0, 0.025) 1px, transparent 1px);
         background-size: 64px 64px;
@@ -64,9 +91,12 @@
         z-index: -1;
         pointer-events: none;
         background:
+          linear-gradient(180deg, transparent 0 7%, rgba(166, 255, 0, 0.055) 7.4%, transparent 8.2% 100%),
           linear-gradient(90deg, rgba(0, 0, 0, 0.72), transparent 40%, rgba(0, 0, 0, 0.4)),
-          repeating-linear-gradient(90deg, transparent 0 46px, rgba(255, 255, 255, 0.018) 47px);
+          repeating-linear-gradient(90deg, transparent 0 46px, rgba(255, 255, 255, 0.018) 47px),
+          repeating-linear-gradient(180deg, transparent 0 7px, rgba(166, 255, 0, 0.018) 8px);
         content: "";
+        animation: scan-drift 7s linear infinite alternate;
       }
 
       button,
@@ -84,9 +114,26 @@
       }
 
       .page {
+        position: relative;
         width: min(1180px, calc(100% - 28px));
         margin: 0 auto;
         padding: 24px 0 34px;
+      }
+
+      .page::before {
+        position: fixed;
+        right: 22px;
+        bottom: 18px;
+        z-index: 1;
+        width: min(220px, 32vw);
+        height: 28px;
+        pointer-events: none;
+        background:
+          repeating-linear-gradient(90deg, var(--green) 0 14px, transparent 14px 22px),
+          linear-gradient(90deg, transparent, rgba(166, 255, 0, 0.28));
+        content: "";
+        opacity: 0.34;
+        filter: blur(0.2px) drop-shadow(0 0 14px rgba(166, 255, 0, 0.55));
       }
 
       .topbar {
@@ -96,6 +143,7 @@
         gap: 22px;
         min-height: 108px;
         border-bottom: 1px solid rgba(166, 255, 0, 0.32);
+        box-shadow: 0 14px 38px rgba(166, 255, 0, 0.05);
       }
 
       .brand {
@@ -173,7 +221,10 @@
         font-size: 12px;
         font-weight: 900;
         padding: 0;
-        box-shadow: inset 0 0 15px rgba(166, 255, 0, 0.08), 0 0 18px rgba(166, 255, 0, 0.16);
+        box-shadow:
+          inset 0 0 15px rgba(166, 255, 0, 0.08),
+          0 0 18px rgba(166, 255, 0, 0.22);
+        text-shadow: 0 0 12px rgba(166, 255, 0, 0.64);
       }
 
       .view {
@@ -216,7 +267,10 @@
         font-weight: 950;
         letter-spacing: -0.09em;
         line-height: 0.88;
-        text-shadow: 0 0 34px rgba(166, 255, 0, 0.4);
+        text-shadow:
+          0 0 18px rgba(166, 255, 0, 0.68),
+          0 0 44px rgba(166, 255, 0, 0.42),
+          0 0 90px rgba(166, 255, 0, 0.2);
       }
 
       .hero-copy,
@@ -239,6 +293,8 @@
       }
 
       .button {
+        position: relative;
+        overflow: hidden;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -252,17 +308,56 @@
         font-weight: 900;
         letter-spacing: 0.02em;
         padding: 0 34px;
+        text-shadow: 0 0 12px rgba(166, 255, 0, 0.28);
+        transition:
+          border-color 180ms ease,
+          box-shadow 180ms ease,
+          transform 180ms ease;
+      }
+
+      .button::before {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          linear-gradient(115deg, transparent 0 38%, rgba(255, 255, 255, 0.34) 46%, transparent 54% 100%);
+        content: "";
+        opacity: 0;
+        transform: translateX(-80%);
+        transition:
+          opacity 180ms ease,
+          transform 420ms ease;
+      }
+
+      .button:hover,
+      .button:focus-visible {
+        border-color: var(--green);
+        box-shadow:
+          0 0 0 1px rgba(166, 255, 0, 0.24),
+          0 0 28px rgba(166, 255, 0, 0.38);
+        transform: translateY(-1px);
+      }
+
+      .button:hover::before,
+      .button:focus-visible::before {
+        opacity: 0.72;
+        transform: translateX(80%);
       }
 
       .button.primary {
         border-color: transparent;
         background: linear-gradient(180deg, var(--green), #87ff00);
         color: #061006;
-        box-shadow: 0 0 32px rgba(166, 255, 0, 0.34);
+        box-shadow:
+          0 0 26px rgba(166, 255, 0, 0.48),
+          0 0 72px rgba(166, 255, 0, 0.18);
+        text-shadow: none;
       }
 
       .button.secondary {
-        background: rgba(4, 6, 6, 0.48);
+        background:
+          linear-gradient(135deg, rgba(166, 255, 0, 0.08), transparent 44%),
+          rgba(4, 6, 6, 0.58);
       }
 
       .button.full {
@@ -419,19 +514,54 @@
       }
 
       .step-card {
+        position: relative;
+        overflow: hidden;
         display: grid;
         grid-template-columns: 330px 1fr;
         gap: 62px;
         align-items: center;
         min-height: 440px;
-        border: 1px solid var(--stroke);
+        border: 1px solid rgba(166, 255, 0, 0.2);
         border-radius: 16px;
         background:
+          linear-gradient(90deg, rgba(166, 255, 0, 0.08) 0 1px, transparent 1px 100%),
+          linear-gradient(180deg, rgba(166, 255, 0, 0.06) 0 1px, transparent 1px 100%),
           linear-gradient(135deg, rgba(166, 255, 0, 0.08), transparent 34%),
           radial-gradient(circle at 90% 20%, rgba(166, 255, 0, 0.09), transparent 22rem),
           var(--panel);
-        box-shadow: inset 0 0 0 1px rgba(166, 255, 0, 0.03), 0 28px 90px rgba(0, 0, 0, 0.45);
+        background-size: 44px 44px, 44px 44px, auto, auto, auto;
+        box-shadow:
+          inset 0 0 0 1px rgba(166, 255, 0, 0.04),
+          inset 0 0 54px rgba(166, 255, 0, 0.035),
+          0 0 44px rgba(166, 255, 0, 0.08),
+          0 28px 90px rgba(0, 0, 0, 0.55);
         padding: clamp(24px, 3.6vw, 48px);
+      }
+
+      .step-card::before,
+      .step-card::after {
+        position: absolute;
+        width: 98px;
+        height: 98px;
+        pointer-events: none;
+        border-color: var(--green);
+        content: "";
+        opacity: 0.64;
+        filter: drop-shadow(0 0 12px rgba(166, 255, 0, 0.48));
+      }
+
+      .step-card::before {
+        top: 14px;
+        left: 14px;
+        border-top: 1px solid;
+        border-left: 1px solid;
+      }
+
+      .step-card::after {
+        right: 14px;
+        bottom: 14px;
+        border-right: 1px solid;
+        border-bottom: 1px solid;
       }
 
       .step-number {
@@ -439,6 +569,9 @@
         font-size: clamp(48px, 6vw, 72px);
         font-weight: 950;
         letter-spacing: -0.09em;
+        text-shadow:
+          0 0 18px rgba(166, 255, 0, 0.72),
+          0 0 48px rgba(166, 255, 0, 0.34);
       }
 
       .step-title {
@@ -548,16 +681,41 @@
       }
 
       .input-shell {
+        position: relative;
         display: flex;
         align-items: center;
         gap: 14px;
         min-height: 82px;
-        border: 1px solid rgba(255, 255, 255, 0.16);
+        border: 1px solid rgba(166, 255, 0, 0.22);
         border-radius: 13px;
-        background: rgba(255, 255, 255, 0.045);
+        background:
+          linear-gradient(90deg, rgba(166, 255, 0, 0.08), transparent 28%),
+          rgba(255, 255, 255, 0.045);
         color: var(--dim);
         font-size: 19px;
         padding: 0 24px;
+        box-shadow:
+          inset 0 0 22px rgba(166, 255, 0, 0.04),
+          0 0 24px rgba(166, 255, 0, 0.08);
+      }
+
+      .input-shell::after {
+        position: absolute;
+        right: 16px;
+        bottom: 10px;
+        left: 16px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--green), transparent);
+        content: "";
+        opacity: 0.38;
+      }
+
+      .input-shell:focus-within {
+        border-color: rgba(166, 255, 0, 0.72);
+        box-shadow:
+          inset 0 0 28px rgba(166, 255, 0, 0.07),
+          0 0 0 1px rgba(166, 255, 0, 0.2),
+          0 0 42px rgba(166, 255, 0, 0.28);
       }
 
       .input-shell input {
@@ -602,6 +760,7 @@
         font-size: 44px;
         box-shadow: var(--shadow);
         clip-path: polygon(0 0, 32% 0, 32% 8%, 8% 8%, 8% 32%, 0 32%, 0 0, 100% 0, 100% 32%, 92% 32%, 92% 8%, 68% 8%, 68% 0, 100% 0, 100% 100%, 68% 100%, 68% 92%, 92% 92%, 92% 68%, 100% 68%, 100% 100%, 0 100%, 0 68%, 8% 68%, 8% 92%, 32% 92%, 32% 100%, 0 100%);
+        animation: neon-pulse 2.8s ease-in-out infinite;
       }
 
       .match-grid {
@@ -619,16 +778,38 @@
       }
 
       .match-card {
+        position: relative;
+        overflow: hidden;
         min-height: 232px;
-        border: 1px solid rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(166, 255, 0, 0.24);
         border-radius: 16px;
-        background: var(--panel-2);
+        background:
+          linear-gradient(135deg, rgba(166, 255, 0, 0.11), transparent 34%),
+          repeating-linear-gradient(90deg, rgba(166, 255, 0, 0.035) 0 1px, transparent 1px 18px),
+          var(--panel-2);
         padding: 28px 22px;
+        box-shadow:
+          inset 0 0 26px rgba(166, 255, 0, 0.035),
+          0 0 24px rgba(166, 255, 0, 0.08);
+      }
+
+      .match-card::before {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        width: 46px;
+        height: 10px;
+        background: repeating-linear-gradient(90deg, var(--green) 0 5px, transparent 5px 9px);
+        content: "";
+        opacity: 0.44;
       }
 
       .match-card.is-selected {
         border-color: var(--green);
-        box-shadow: var(--shadow);
+        box-shadow:
+          0 0 0 1px rgba(166, 255, 0, 0.28),
+          0 0 28px rgba(166, 255, 0, 0.35),
+          inset 0 0 34px rgba(166, 255, 0, 0.06);
       }
 
       .match-card.empty {
@@ -642,9 +823,10 @@
         width: 24px;
         height: 24px;
         margin-right: 10px;
-        border: 2px solid rgba(255, 255, 255, 0.5);
+        border: 2px solid rgba(166, 255, 0, 0.44);
         border-radius: 999px;
         vertical-align: -5px;
+        box-shadow: 0 0 12px rgba(166, 255, 0, 0.16);
       }
 
       .is-selected .radio-dot {
@@ -654,8 +836,10 @@
       }
 
       .match-name {
+        color: rgba(244, 247, 239, 0.96);
         font-size: 24px;
         font-weight: 500;
+        text-shadow: 0 0 14px rgba(166, 255, 0, 0.22);
       }
 
       .match-meta {
@@ -734,6 +918,10 @@
           0 0 54px rgba(166, 255, 0, 0.18);
       }
 
+      .ticket-visual::marker {
+        color: var(--green);
+      }
+
       .ticket-visual h3 {
         margin: 0;
         color: var(--green);
@@ -747,10 +935,12 @@
         border: 1px solid rgba(166, 255, 0, 0.3);
         border-radius: 18px;
         background:
+          linear-gradient(115deg, transparent 0 42%, rgba(166, 255, 0, 0.18) 44%, transparent 48% 100%),
           radial-gradient(circle at 22% 70%, var(--green) 0 6px, transparent 7px),
           radial-gradient(circle at 78% 70%, var(--green) 0 6px, transparent 7px),
           linear-gradient(transparent 55%, rgba(166, 255, 0, 0.26) 56% 58%, transparent 59%),
           repeating-linear-gradient(90deg, rgba(166, 255, 0, 0.11) 0 2px, transparent 3px 46px);
+        box-shadow: inset 0 0 24px rgba(166, 255, 0, 0.08);
       }
 
       .socials {
@@ -767,10 +957,13 @@
         min-height: 62px;
         border: 1px solid var(--green);
         border-radius: 10px;
-        background: rgba(4, 6, 6, 0.55);
+        background:
+          linear-gradient(135deg, rgba(166, 255, 0, 0.12), transparent 46%),
+          rgba(4, 6, 6, 0.58);
         color: var(--text);
         font-size: 16px;
         font-weight: 750;
+        box-shadow: inset 0 0 18px rgba(166, 255, 0, 0.04);
       }
 
       .reward-step {
@@ -792,6 +985,15 @@
           rgba(6, 8, 8, 0.78);
         padding: 24px;
         box-shadow: inset 0 0 28px rgba(166, 255, 0, 0.05);
+      }
+
+      .reward-card::before {
+        position: absolute;
+        inset: 12px;
+        pointer-events: none;
+        border: 1px solid rgba(166, 255, 0, 0.14);
+        border-radius: 14px;
+        content: "";
       }
 
       .reward-card h3 {
