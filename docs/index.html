@@ -312,6 +312,20 @@
         min-height: 470px;
       }
 
+      .hero-art img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border: 1px solid rgba(166, 255, 0, 0.24);
+        border-radius: 28px;
+        box-shadow:
+          0 0 80px rgba(166, 255, 0, 0.16),
+          0 36px 90px rgba(0, 0, 0, 0.72);
+        filter: contrast(1.08) saturate(1.08);
+      }
+
       .city {
         position: absolute;
         inset: 0 0 120px 12%;
@@ -558,6 +572,7 @@
       .input-shell {
         display: flex;
         align-items: center;
+        gap: 14px;
         min-height: 82px;
         border: 1px solid rgba(255, 255, 255, 0.16);
         border-radius: 13px;
@@ -565,6 +580,20 @@
         color: var(--dim);
         font-size: 19px;
         padding: 0 24px;
+      }
+
+      .input-shell input {
+        flex: 1;
+        min-width: 0;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        font: inherit;
+      }
+
+      .input-shell input::placeholder {
+        color: var(--dim);
       }
 
       .meta {
@@ -1090,10 +1119,6 @@
           <div>
             <div class="eyebrow">TECHNO BUS <span class="zh">報到</span><span class="en">CHECK-IN</span></div>
             <h1 class="hero-title"><span class="zh">歡迎上車。</span><span class="en">Welcome aboard.</span></h1>
-            <p class="hero-copy">
-              <span class="zh">快速完成入場報到，累積真實出席紀錄。</span>
-              <span class="en">Fast entrance check-in for real attendance records.</span>
-            </p>
             <div class="pill-row" aria-hidden="true">
               <span class="pill"><span class="pill-icon">QR</span><span class="zh">QR 掃描入口</span><span class="en">QR entry</span></span>
               <span class="pill"><span class="pill-icon">DB</span><span class="zh">連結會員資料庫</span><span class="en">CRM linked</span></span>
@@ -1110,13 +1135,7 @@
           </div>
 
           <div class="hero-art" aria-label="Techno Bus visual">
-            <div class="city"></div>
-            <div class="bus-hero">
-              <div class="bus-sign">TECHNO BUS</div>
-              <div class="headlights"></div>
-            </div>
-            <div class="route-glow"></div>
-            <div class="next-stop">NEXT STOP<br />THE NIGHT</div>
+            <img src="assets/hero-bus.jpg" alt="Techno Bus night bus" />
           </div>
         </div>
       </section>
@@ -1138,12 +1157,15 @@
             <div class="step-number">1.</div>
             <h2 class="step-title"><span class="zh">歡迎入場</span><span class="en">Welcome</span></h2>
             <p class="step-text">
-              <span class="zh">請輸入 Email 或中文姓名完成入場報到。</span>
-              <span class="en">Please enter your email or Chinese name to check in.</span>
+              <span class="zh">請輸入 Email 或報名名字完成入場報到。</span>
+              <span class="en">Please enter your email or registered name to check in.</span>
             </p>
             <div class="field">
-              <label><span class="zh">Email 或中文姓名</span><span class="en">Email or Chinese name</span></label>
-              <div class="input-shell"><span class="zh">Email 或中文姓名</span><span class="en">Email or Chinese name</span><span style="margin-left:auto">♙</span></div>
+              <label for="checkin-query"><span class="zh">Email 或報名名字</span><span class="en">Email or registered name</span></label>
+              <div class="input-shell">
+                <input id="checkin-query" name="checkin-query" type="text" autocomplete="name email" placeholder="Email 或報名名字" />
+                <span aria-hidden="true">♙</span>
+              </div>
             </div>
             <button class="button primary full" type="button" data-go="name-select">
               <span class="zh">完成入場報到</span>
