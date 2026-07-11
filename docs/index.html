@@ -160,14 +160,19 @@
       }
 
       .language-toggle {
-        min-width: 58px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
         border: 1px solid var(--green);
-        border-radius: 999px;
+        border-radius: 13px;
         background: rgba(0, 0, 0, 0.42);
         color: var(--text);
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 900;
-        padding: 9px 14px;
+        padding: 0;
         box-shadow: inset 0 0 15px rgba(166, 255, 0, 0.08), 0 0 18px rgba(166, 255, 0, 0.16);
       }
 
@@ -224,37 +229,6 @@
       .hero-copy {
         max-width: 560px;
         margin-top: 22px;
-      }
-
-      .pill-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-top: 22px;
-      }
-
-      .pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        border: 1px solid var(--green);
-        border-radius: 999px;
-        background: rgba(0, 0, 0, 0.34);
-        color: rgba(244, 247, 239, 0.88);
-        font-size: 13px;
-        font-weight: 800;
-        padding: 9px 16px;
-      }
-
-      .pill-icon {
-        display: inline-grid;
-        width: 18px;
-        height: 18px;
-        place-items: center;
-        border: 1px solid var(--green);
-        border-radius: 5px;
-        color: var(--green);
-        font-size: 10px;
       }
 
       .actions {
@@ -318,12 +292,16 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        border: 1px solid rgba(166, 255, 0, 0.24);
-        border-radius: 28px;
+        border: 0;
+        border-radius: 0;
         box-shadow:
-          0 0 80px rgba(166, 255, 0, 0.16),
-          0 36px 90px rgba(0, 0, 0, 0.72);
+          0 0 90px rgba(166, 255, 0, 0.18),
+          0 42px 100px rgba(0, 0, 0, 0.78);
         filter: contrast(1.08) saturate(1.08);
+        mask-image:
+          linear-gradient(to right, transparent 0%, black 16%, black 84%, transparent 100%),
+          linear-gradient(to bottom, transparent 0%, black 12%, black 82%, transparent 100%);
+        mask-composite: intersect;
       }
 
       .city {
@@ -1051,10 +1029,6 @@
           font-size: 12px;
         }
 
-        .pill-row {
-          display: none;
-        }
-
         .actions {
           display: grid;
         }
@@ -1118,12 +1092,7 @@
         <div class="hero-grid">
           <div>
             <div class="eyebrow">TECHNO BUS <span class="zh">報到</span><span class="en">CHECK-IN</span></div>
-            <h1 class="hero-title"><span class="zh">歡迎上車。</span><span class="en">Welcome aboard.</span></h1>
-            <div class="pill-row" aria-hidden="true">
-              <span class="pill"><span class="pill-icon">QR</span><span class="zh">QR 掃描入口</span><span class="en">QR entry</span></span>
-              <span class="pill"><span class="pill-icon">DB</span><span class="zh">連結會員資料庫</span><span class="en">CRM linked</span></span>
-              <span class="pill"><span class="pill-icon">🎁</span><span class="zh">抽獎互動</span><span class="en">Lucky draw</span></span>
-            </div>
+            <h1 class="hero-title"><span class="zh">歡迎上車</span><span class="en">Welcome aboard</span></h1>
             <div class="actions">
               <button class="button primary" type="button" data-go="checkin">
                 <span class="bus-logo" aria-hidden="true"></span>
