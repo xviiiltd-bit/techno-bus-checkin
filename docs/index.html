@@ -91,8 +91,9 @@
 
       .topbar {
         display: grid;
-        grid-template-columns: auto 1fr auto;
+        grid-template-columns: auto auto;
         align-items: center;
+        justify-content: space-between;
         gap: 22px;
         min-height: 108px;
         border-bottom: 1px solid rgba(166, 255, 0, 0.32);
@@ -971,11 +972,6 @@
         <a class="brand" href="#home" data-go="home" aria-label="Techno Bus Check-in">
           <img class="brand-logo" src="assets/techno-bus-logo.png" alt="TECHNO BUS TW" />
         </a>
-        <nav class="nav" aria-label="Primary">
-          <a href="#checkin" data-go="checkin"><span class="zh">活動報到</span><span class="en">Check-in</span></a>
-          <a href="#success" data-go="success"><span class="zh">真實數據</span><span class="en">Audience data</span></a>
-          <a href="#reward" data-go="reward"><span class="zh">更好的活動</span><span class="en">Better events</span></a>
-        </nav>
         <button class="language-toggle" type="button" aria-label="Switch language">EN</button>
       </header>
 
@@ -991,14 +987,9 @@
             <div class="actions">
               <button class="button primary" type="button" data-go="checkin">
                 <span class="bus-logo" aria-hidden="true"></span>
-                <span class="zh">開始報到</span>
-                <span class="en">Start check-in</span>
+                <span class="zh">活動報到</span>
+                <span class="en">Check in</span>
                 <span class="arrow">→</span>
-              </button>
-              <button class="button secondary" type="button" data-go="name-select">
-                <span class="zh">工作人員確認</span>
-                <span class="en">Staff confirm</span>
-                <span>⌾</span>
               </button>
             </div>
           </div>
@@ -1082,7 +1073,7 @@
                 <button class="button small secondary full" type="button" data-go="success"><span class="zh">確認此來賓</span><span class="en">Confirm</span></button>
               </article>
             </div>
-            <p class="note">ⓘ <span class="zh">請由工作人員確認正確來賓後進行報到，避免重複報到。</span><span class="en">Staff should confirm the attendee before check-in to avoid duplicates.</span></p>
+            <p class="note">ⓘ <span class="zh">請點擊你的名字完成報到，避免重複報到。</span><span class="en">Tap your name to complete check-in and avoid duplicate check-ins.</span></p>
           </div>
         </div>
       </section>
@@ -1132,8 +1123,8 @@
               <span class="en">Congratulations. You received:</span>
               <strong><span class="zh">免費飲品兌換券</span><span class="en">Free drink voucher</span></strong>
             </p>
-            <p class="step-text"><span class="zh">請出示此畫面給工作人員兌換。</span><span class="en">Please show this screen to staff for redemption.</span></p>
-            <button class="button secondary" type="button">▣ <span class="zh">出示給工作人員</span><span class="en">Show to staff</span></button>
+            <p class="step-text"><span class="zh">請出示此兌換畫面。</span><span class="en">Please show this redemption screen.</span></p>
+            <button class="button secondary" type="button">▣ <span class="zh">出示兌換畫面</span><span class="en">Show redemption screen</span></button>
           </div>
 
           <div class="reward-media">
