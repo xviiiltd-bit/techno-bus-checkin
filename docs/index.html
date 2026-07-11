@@ -1284,7 +1284,8 @@
       const toggle = document.querySelector(".language-toggle");
       const validViews = new Set(["home", "checkin", "name-select", "success", "reward", "thanks"]);
       const eventId = "techno-bus-2026-0718";
-      const eventRegistrations = [
+      const registrationLookupEndpoint = "";
+      const sampleRegistrations = [
         {
           id: "reg-001",
           eventId,
@@ -1310,6 +1311,9 @@
           totalCheckins: 2,
         },
       ];
+      let eventRegistrations = [...sampleRegistrations];
+      let currentMatches = [];
+      let registrationLoadError = "";
       let selectedAttendee = eventRegistrations[0];
       let rewardDrawn = false;
 
@@ -1332,8 +1336,7 @@
         return `${local.slice(0, 2)}***@${domain}`;
       }
 
-      function findRegistrations() {
-        const query = document.querySelector("#checkin-query").value.trim();
+      function findSampleRegistrations(query) {
         const scoped = eventRegistrations.filter((registration) => registration.eventId === eventId);
         if (!query) return [];
 
@@ -1343,16 +1346,70 @@
         return scoped.filter((registration) => registration.name === query);
       }
 
+      function lookupWithJsonp(query) {
+        return new Promise((resolve, reject) => {
+          const callbackName = `technoBusLookup${Date.now()}${Math.floor(Math.random() * 1000)}`;
+          const script = document.createElement("script");
+          const url = new URL(registrationLookupEndpoint);
+
+          url.searchParams.set("eventId", eventId);
+          url.searchParams.set("query", query);
+          url.searchParams.set("callback", callbackName);
+
+          window[callbackName] = (payload) => {
+            delete window[callbackName];
+            script.remove();
+            resolve(payload?.matches || []);
+          };
+
+          script.onerror = () => {
+            delete window[callbackName];
+            script.remove();
+            reject(new Error("lookup failed"));
+          };
+
+          script.src = url.toString();
+          document.body.appendChild(script);
+        });
+      }
+
+      async function lookupRegistrations() {
+        const query = document.querySelector("#checkin-query").value.trim();
+        if (!query) return [];
+
+        if (!registrationLookupEndpoint) {
+          registrationLoadError = "尚未設定 Google Sheet 查詢端點，目前顯示範例資料。";
+          return findSampleRegistrations(query);
+        }
+
+        try {
+          registrationLoadError = "";
+          return await lookupWithJsonp(query);
+        } catch (error) {
+          registrationLoadError = "Google Sheet 查詢失敗，請確認 Apps Script Web App 已部署且允許公開存取。";
+          return [];
+        }
+      }
+
       function updateSuccess(attendee) {
+        if (!attendee) return;
         selectedAttendee = attendee;
         document.querySelector("#success-name").textContent = attendee.name;
         document.querySelector("#success-count").textContent = String(attendee.totalCheckins);
         rewardDrawn = false;
       }
 
-      function renderMatches() {
-        const matches = findRegistrations();
+      async function renderMatches() {
         const grid = document.querySelector("#match-grid");
+        grid.classList.remove("single-match", "empty-match");
+        grid.innerHTML = `
+          <article class="match-card empty">
+            <div class="match-name"><span class="zh">正在讀取報名資料</span><span class="en">Loading registrations</span></div>
+            <div class="match-meta"><span class="zh">正在連接活動名單資料庫。</span><span class="en">Connecting to event registration data.</span></div>
+          </article>
+        `;
+        const matches = await lookupRegistrations();
+        currentMatches = matches;
         grid.classList.toggle("single-match", matches.length === 1);
         grid.classList.toggle("empty-match", matches.length === 0);
 
@@ -1360,7 +1417,10 @@
           grid.innerHTML = `
             <article class="match-card empty">
               <div class="match-name"><span class="zh">查無報名資料</span><span class="en">No registration found</span></div>
-              <div class="match-meta"><span class="zh">請確認 Email 或報名名字是否正確。</span><span class="en">Please check the email or registered name.</span></div>
+              <div class="match-meta">
+                <span class="zh">請確認 Email 或報名名字是否正確。</span><span class="en">Please check the email or registered name.</span>
+                ${registrationLoadError ? `<br /><br /><span class="zh">${registrationLoadError}</span><span class="en">${registrationLoadError}</span>` : ""}
+              </div>
             </article>
           `;
           return;
@@ -1368,8 +1428,8 @@
 
         grid.innerHTML = matches.map((registration, index) => `
           <article class="match-card ${index === 0 ? "is-selected" : ""}">
-            <div class="match-name"><span class="radio-dot"></span>${maskName(registration.name)}</div>
-            <div class="match-meta">${maskEmail(registration.email)}<br /><span class="zh">票種</span><span class="en">Ticket</span>　${registration.ticketType}</div>
+            <div class="match-name"><span class="radio-dot"></span>${registration.maskedName || maskName(registration.name)}</div>
+            <div class="match-meta">${registration.maskedEmail || maskEmail(registration.email || "")}<br /><span class="zh">票種</span><span class="en">Ticket</span>　${registration.ticketType || "一般票"}</div>
             <button class="button small secondary full" type="button" data-confirm-registration="${registration.id}">
               <span class="zh">確認此來賓</span><span class="en">Confirm</span>
             </button>
@@ -1378,7 +1438,7 @@
 
         grid.querySelectorAll("[data-confirm-registration]").forEach((button) => {
           button.addEventListener("click", () => {
-            const attendee = eventRegistrations.find((registration) => registration.id === button.dataset.confirmRegistration);
+            const attendee = currentMatches.find((registration) => registration.id === button.dataset.confirmRegistration);
             updateSuccess(attendee);
             showView("success");
           });
