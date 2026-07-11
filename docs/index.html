@@ -1285,6 +1285,7 @@
       const validViews = new Set(["home", "checkin", "name-select", "success", "reward", "thanks"]);
       const eventId = "techno-bus-2026-0718";
       const registrationLookupEndpoint = "";
+      const localRegistrationDataUrl = "registrations-7-18.json";
       const sampleRegistrations = [
         {
           id: "reg-001",
@@ -1312,6 +1313,7 @@
         },
       ];
       let eventRegistrations = [...sampleRegistrations];
+      let localRegistrationsLoaded = false;
       let currentMatches = [];
       let registrationLoadError = "";
       let selectedAttendee = eventRegistrations[0];
@@ -1346,6 +1348,23 @@
         return scoped.filter((registration) => registration.name === query);
       }
 
+      async function loadLocalRegistrations() {
+        if (localRegistrationsLoaded) return;
+        localRegistrationsLoaded = true;
+
+        try {
+          const response = await fetch(localRegistrationDataUrl, { cache: "no-store" });
+          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+          const registrations = await response.json();
+          eventRegistrations = registrations;
+          selectedAttendee = eventRegistrations[0] || selectedAttendee;
+          registrationLoadError = "";
+        } catch (error) {
+          eventRegistrations = [...sampleRegistrations];
+          registrationLoadError = "本機姓名名單讀取失敗，目前顯示範例資料。";
+        }
+      }
+
       function lookupWithJsonp(query) {
         return new Promise((resolve, reject) => {
           const callbackName = `technoBusLookup${Date.now()}${Math.floor(Math.random() * 1000)}`;
@@ -1378,7 +1397,7 @@
         if (!query) return [];
 
         if (!registrationLookupEndpoint) {
-          registrationLoadError = "尚未設定 Google Sheet 查詢端點，目前顯示範例資料。";
+          await loadLocalRegistrations();
           return findSampleRegistrations(query);
         }
 
