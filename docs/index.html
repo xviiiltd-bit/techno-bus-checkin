@@ -1484,33 +1484,43 @@
       const eventId = "techno-bus-2026-0718";
       const registrationLookupEndpoint = "";
       const localRegistrationDataUrl = "registrations-7-18.json";
-      const sampleRegistrations = [
-        {
-          id: "reg-001",
-          eventId,
-          name: "陳璽安",
-          email: "mica@example.com",
-          ticketType: "VIP",
-          totalCheckins: 3,
-        },
-        {
-          id: "reg-002",
-          eventId,
-          name: "陳文安",
-          email: "wenan01@example.com",
-          ticketType: "一般票",
-          totalCheckins: 1,
-        },
-        {
-          id: "reg-003",
-          eventId,
-          name: "陳文安",
-          email: "wenan02@example.com",
-          ticketType: "VIP",
-          totalCheckins: 2,
-        },
+      const sheetRegistrationFallback = [
+        { id: "sheet-1", eventId, name: "Jessica", maskedEmail: "je***@hotmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-2", eventId, name: "Zlata", maskedEmail: "zl***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-3", eventId, name: "Wendy Galeano", maskedEmail: "we***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-4", eventId, name: "Josh Dong", maskedEmail: "jo***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-5", eventId, name: "Bella", maskedEmail: "bk***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-6", eventId, name: "Noah", maskedEmail: "ay***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-7", eventId, name: "Tomasz Jurewicz", maskedEmail: "to***@hotmail.co.uk", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-8", eventId, name: "Ray", maskedEmail: "ma***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-9", eventId, name: "Ann", maskedEmail: "re***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-10", eventId, name: "Anthony", maskedEmail: "ba***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-11", eventId, name: "Jan Bleeker", maskedEmail: "ja***@bleeker-bremen.de", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-12", eventId, name: "Jan", maskedEmail: "ja***@bleeker-bremen.de", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-13", eventId, name: "Tim Holt", maskedEmail: "tg***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-14", eventId, name: "Helen SHIH", maskedEmail: "he***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-15", eventId, name: "陳威儒", maskedEmail: "qa***@icloud.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-16", eventId, name: "譚志剛", maskedEmail: "yt***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-17", eventId, name: "高芷柔", maskedEmail: "a2***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-18", eventId, name: "林冠廷", maskedEmail: "lo***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-19", eventId, name: "Jonnie Liu", maskedEmail: "jo***@yahoo.com.tw", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-20", eventId, name: "Debora David", maskedEmail: "dd***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-21", eventId, name: "游子萱", maskedEmail: "he***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-22", eventId, name: "Enrique", maskedEmail: "ys***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-23", eventId, name: "Cheryl", maskedEmail: "im***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-24", eventId, name: "Elisa", maskedEmail: "be***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-25", eventId, name: "Indria Pramawati", maskedEmail: "fo***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-26", eventId, name: "Lulu Luciana", maskedEmail: "na***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-27", eventId, name: "Lulu", maskedEmail: "in***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-28", eventId, name: "Umi Nasihah muktamaroh", maskedEmail: "um***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-29", eventId, name: "王心慧", maskedEmail: "a_***@yahoo.com.tw", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-30", eventId, name: "Lulu Luciana", maskedEmail: "in***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-31", eventId, name: "Yeni", maskedEmail: "ye***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-32", eventId, name: "林芝伃", maskedEmail: "vi***@hotmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-33", eventId, name: "Abou Fadera", maskedEmail: "fa***@gmail.com", ticketType: "FREE", totalCheckins: 1 },
+        { id: "sheet-34", eventId, name: "Mica", maskedEmail: "mi***@g", ticketType: "FREE", totalCheckins: 1 },
       ];
-      let eventRegistrations = [...sampleRegistrations];
+      let eventRegistrations = [...sheetRegistrationFallback];
       let localRegistrationsLoaded = false;
       let currentMatches = [];
       let registrationLoadError = "";
@@ -1536,14 +1546,25 @@
         return `${local.slice(0, 2)}***@${domain}`;
       }
 
+      function normalizeQuery(value) {
+        return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
+      }
+
       function findSampleRegistrations(query) {
         const scoped = eventRegistrations.filter((registration) => registration.eventId === eventId);
+        const normalizedQuery = normalizeQuery(query);
         if (!query) return [];
 
-        const emailMatch = scoped.filter((registration) => (registration.email || "").toLowerCase() === query.toLowerCase());
+        const emailMatch = scoped.filter((registration) => {
+          const email = normalizeQuery(registration.email || registration.maskedEmail);
+          return email && email === normalizedQuery;
+        });
         if (emailMatch.length) return emailMatch;
 
-        return scoped.filter((registration) => registration.name === query);
+        const exactNameMatch = scoped.filter((registration) => normalizeQuery(registration.name) === normalizedQuery);
+        if (exactNameMatch.length) return exactNameMatch;
+
+        return scoped.filter((registration) => normalizeQuery(registration.name).includes(normalizedQuery));
       }
 
       async function loadLocalRegistrations() {
@@ -1564,8 +1585,8 @@
           selectedAttendee = eventRegistrations[0] || selectedAttendee;
           registrationLoadError = "";
         } catch (error) {
-          eventRegistrations = [...sampleRegistrations];
-          registrationLoadError = "本機姓名名單讀取失敗，目前顯示範例資料。";
+          eventRegistrations = [...sheetRegistrationFallback];
+          registrationLoadError = "名單檔讀取失敗，目前使用內建姓名資料。";
         }
       }
 
