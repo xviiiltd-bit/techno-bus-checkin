@@ -855,17 +855,20 @@
       }
 
       .success-step {
-        grid-template-columns: 0.9fr 1.1fr;
+        grid-template-columns: 0.78fr 1.22fr;
+        gap: 38px 62px;
+        align-items: start;
       }
 
       .success-visual {
         position: relative;
+        min-height: 216px;
       }
 
       .success-visual::before,
       .success-visual::after {
         position: absolute;
-        top: 38px;
+        top: 30px;
         color: rgba(166, 255, 0, 0.32);
         font-size: 42px;
         font-weight: 950;
@@ -874,11 +877,51 @@
       }
 
       .success-visual::before {
-        left: 6px;
+        left: -28px;
       }
 
       .success-visual::after {
-        right: 8px;
+        right: 2px;
+        bottom: 18px;
+        top: auto;
+      }
+
+      .success-ticket-image {
+        position: relative;
+        z-index: 1;
+        overflow: hidden;
+        width: min(100%, 520px);
+        margin-left: auto;
+        border: 1px solid rgba(166, 255, 0, 0.46);
+        border-radius: 24px;
+        background: rgba(4, 8, 5, 0.72);
+        box-shadow:
+          0 0 34px rgba(166, 255, 0, 0.25),
+          inset 0 0 26px rgba(166, 255, 0, 0.08);
+        transform: rotate(-3.5deg);
+      }
+
+      .success-ticket-image img {
+        display: block;
+        width: 100%;
+        height: auto;
+        filter:
+          saturate(1.18)
+          contrast(1.08)
+          drop-shadow(0 0 16px rgba(166, 255, 0, 0.34));
+      }
+
+      .success-socials,
+      .success-draw {
+        grid-column: 1 / -1;
+      }
+
+      .success-socials {
+        margin-top: 4px;
+      }
+
+      .success-draw {
+        margin-top: -2px;
       }
 
       .detail-list {
@@ -947,7 +990,7 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 14px;
-        margin-top: 34px;
+        margin-top: 0;
       }
 
       .socials a {
@@ -1214,7 +1257,7 @@
         display: none;
       }
 
-      @media (max-width: 920px) {
+      @media (max-width: 720px) {
         .page {
           width: min(100% - 22px, 540px);
           padding-top: 18px;
@@ -1297,6 +1340,25 @@
         .success-visual,
         .reward-media {
           margin-top: 28px;
+        }
+
+        .success-visual {
+          min-height: auto;
+        }
+
+        .success-visual::before,
+        .success-visual::after {
+          display: none;
+        }
+
+        .success-ticket-image {
+          width: 100%;
+          margin: 28px 0 0;
+          transform: rotate(-2deg);
+        }
+
+        .success-socials {
+          margin-top: 24px;
         }
 
         .match-grid,
@@ -1429,21 +1491,20 @@
           </div>
 
           <div class="success-visual">
-            <div class="ticket-visual">
-              <h3>WELCOME ABOARD</h3>
-              <div class="bus-line-art"></div>
-              <div class="barcode" style="width: 180px"></div>
+            <div class="success-ticket-image">
+              <img src="assets/success-ticket-reference.png" alt="Welcome aboard Techno Bus ticket" />
             </div>
-            <div class="socials">
-              <a href="#">▣ Techno bus</a>
-              <a href="#">▣ NextStop studio</a>
-              <a href="#">▶ NextStop YouTube</a>
-              <a href="#">▥ HENDUO MUSIC</a>
-            </div>
-            <button class="button primary full" type="button" data-go="reward">
-              🎁 <span class="zh">參加抽獎</span><span class="en">Enter Lucky Draw</span> <span class="arrow">→</span>
-            </button>
           </div>
+
+          <div class="socials success-socials">
+            <a href="#">▣ Techno bus</a>
+            <a href="#">▣ NextStop studio</a>
+            <a href="#">▶ NextStop YouTube</a>
+            <a href="#">▥ HENDUO MUSIC</a>
+          </div>
+          <button class="button primary full success-draw" type="button" data-go="reward">
+            🎁 <span class="zh">參加抽獎</span><span class="en">Enter Lucky Draw</span> <span class="arrow">→</span>
+          </button>
         </div>
       </section>
 
