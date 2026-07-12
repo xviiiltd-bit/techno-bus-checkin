@@ -889,15 +889,13 @@
       .success-ticket-image {
         position: relative;
         z-index: 1;
-        overflow: hidden;
+        overflow: visible;
         width: min(100%, 520px);
         margin-left: auto;
-        border: 1px solid rgba(166, 255, 0, 0.46);
-        border-radius: 24px;
-        background: rgba(4, 8, 5, 0.72);
-        box-shadow:
-          0 0 34px rgba(166, 255, 0, 0.25),
-          inset 0 0 26px rgba(166, 255, 0, 0.08);
+        border: 0;
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
         transform: rotate(-3.5deg);
       }
 
@@ -1479,8 +1477,8 @@
           <div>
             <div class="step-number">3.</div>
             <h2 class="step-title">
-              <span class="zh">報到成功，<br />歡迎回到 Techno Bus</span>
-              <span class="en">Check-in successful,<br />welcome back</span>
+              <span class="zh">報到成功</span>
+              <span class="en">Check-in successful</span>
             </h2>
             <div class="detail-list">
               <div><span><span class="zh">活動</span><span class="en">Event</span></span><b>TECHNO BUS 2026</b></div>
@@ -1503,7 +1501,7 @@
             <a href="#">▥ HENDUO MUSIC</a>
           </div>
           <button class="button primary full success-draw" type="button" data-go="reward">
-            🎁 <span class="zh">參加抽獎</span><span class="en">Enter Lucky Draw</span> <span class="arrow">→</span>
+            <span class="zh">參加抽獎</span><span class="en">Enter Lucky Draw</span> <span class="arrow">→</span>
           </button>
         </div>
       </section>
