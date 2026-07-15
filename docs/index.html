@@ -1729,6 +1729,57 @@
         });
       }
 
+      function markSheetCheckinWithJsonp(registration) {
+        return new Promise((resolve, reject) => {
+          const callbackName = `technoBusCheckin${Date.now()}${Math.floor(Math.random() * 1000)}`;
+          const script = document.createElement("script");
+          const url = new URL(registrationLookupEndpoint);
+
+          url.searchParams.set("action", "checkin");
+          url.searchParams.set("eventId", eventId);
+          url.searchParams.set("registrationId", registration.id || "");
+          url.searchParams.set("query", document.querySelector("#checkin-query").value.trim());
+          url.searchParams.set("callback", callbackName);
+
+          const timeoutId = window.setTimeout(() => {
+            delete window[callbackName];
+            script.remove();
+            reject(new Error("checkin write timed out"));
+          }, 6000);
+
+          window[callbackName] = (payload) => {
+            window.clearTimeout(timeoutId);
+            delete window[callbackName];
+            script.remove();
+            if (payload?.ok) {
+              resolve(payload);
+            } else {
+              reject(new Error(payload?.error || "checkin write failed"));
+            }
+          };
+
+          script.onerror = () => {
+            window.clearTimeout(timeoutId);
+            delete window[callbackName];
+            script.remove();
+            reject(new Error("checkin write failed"));
+          };
+
+          script.src = url.toString();
+          document.body.appendChild(script);
+        });
+      }
+
+      async function markSheetCheckin(registration) {
+        if (!registrationLookupEndpoint || !registration?.id) return;
+
+        try {
+          await markSheetCheckinWithJsonp(registration);
+        } catch (error) {
+          console.warn("Google Sheet check-in mark failed:", error);
+        }
+      }
+
       async function lookupRegistrations() {
         const query = document.querySelector("#checkin-query").value.trim();
         if (!query) return [];
@@ -1803,8 +1854,10 @@
         `).join("");
 
         grid.querySelectorAll("[data-confirm-registration]").forEach((button) => {
-          button.addEventListener("click", () => {
+          button.addEventListener("click", async () => {
             const attendee = currentMatches.find((registration) => registration.id === button.dataset.confirmRegistration);
+            button.disabled = true;
+            await markSheetCheckin(attendee);
             updateSuccess(attendee);
             showView("success");
           });
