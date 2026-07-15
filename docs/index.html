@@ -668,6 +668,24 @@
         max-width: 720px;
       }
 
+      .checkin-step {
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+
+      .checkin-step .form-card {
+        width: min(100%, 760px);
+      }
+
+      .checkin-ticket-card {
+        min-height: 260px;
+        margin-top: 24px;
+      }
+
+      .checkin-ticket-card + .button {
+        margin-top: 28px;
+      }
+
       .field {
         margin-top: 28px;
       }
@@ -1434,18 +1452,7 @@
       </section>
 
       <section id="checkin" class="step view" data-view="checkin">
-        <div class="step-card">
-          <aside class="ticket-card" aria-label="Boarding pass">
-            <div class="ticket-kicker">▣ <span class="zh">登車報到證</span><span class="en">Boarding pass</span></div>
-            <div class="ticket-list">
-              <div><span><span class="zh">活動</span><span class="en">Event</span></span><strong>TECHNO BUS 2026</strong></div>
-              <div><span><span class="zh">日期</span><span class="en">Date</span></span><strong>2026.07.18</strong></div>
-              <div><span><span class="zh">時間</span><span class="en">Time</span></span><strong>22:00 - LATE</strong></div>
-              <div><span><span class="zh">地點</span><span class="en">City</span></span><strong>TAIPEI CITY</strong></div>
-            </div>
-            <div class="barcode"></div>
-          </aside>
-
+        <div class="step-card checkin-step">
           <div class="form-card">
             <div class="step-number">1.</div>
             <h2 class="step-title"><span class="zh">歡迎入場</span><span class="en">Welcome</span></h2>
@@ -1460,6 +1467,18 @@
                 <span aria-hidden="true">♙</span>
               </div>
             </div>
+
+            <aside class="ticket-card checkin-ticket-card" aria-label="Boarding pass">
+              <div class="ticket-kicker">▣ <span class="zh">登車報到證</span><span class="en">Boarding pass</span></div>
+              <div class="ticket-list">
+                <div><span><span class="zh">活動</span><span class="en">Event</span></span><strong>TECHNO BUS 2026</strong></div>
+                <div><span><span class="zh">日期</span><span class="en">Date</span></span><strong>2026.07.18</strong></div>
+                <div><span><span class="zh">時間</span><span class="en">Time</span></span><strong>22:00 - LATE</strong></div>
+                <div><span><span class="zh">地點</span><span class="en">City</span></span><strong>TAIPEI CITY</strong></div>
+              </div>
+              <div class="barcode"></div>
+            </aside>
+
             <button class="button primary full" type="button" data-go="name-select">
               <span class="zh">完成入場報到</span>
               <span class="en">Check in</span>
